@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Gym Tracker App 2</string>
+    <string name="title_activity_home_screen">HomeScreen</string>
+    <string name="new_workout">New workout</string>
+    <string name="workout_history">Workout history</string>
+
+    <string name="exercise_name">Exercise Name</string>
+    <string name="add_set">Add set</string>
+    <string name="remove_set">Remove set</string>
+    <string name="date">Date</string>
+    <string name="add_exercise">Add Exercise</string>
+    <string name="remove_exercise">Remove Exercise</string>
+    <string name="save">Save</string>
+    <string name="tabDescription">Select which exercise you would like to edit</string>
+    <string name="exerciseDisplayDescription">Details about each exercise are displayed here</string>
+
+    <string name="title_activity_workout">workoutActivity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+</resources>
