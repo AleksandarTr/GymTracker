@@ -5,7 +5,7 @@
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.main.PlaceholderFragment">
+    tools:context=".ui.main.ExerciseFragment">
 
     <EditText
         android:id="@+id/exerciseNameField"
@@ -22,7 +22,8 @@
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -46,27 +47,24 @@
 
         <Button
             android:id="@+id/addSetButton"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
-            style="?android:attr/buttonBarButtonStyle"
             android:layout_weight="1"
             android:backgroundTint="@color/button_color"
             android:text="@string/add_set"
-            android:textColor="@color/white"
-            android:textColorLink="@color/button_color"
-            app:rippleColor="@color/button_color" />
+            android:textColor="@color/white" />
 
         <Button
             android:id="@+id/removeSetButton"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:layout_weight="1"
-            style="?android:attr/buttonBarButtonStyle"
             android:backgroundTint="@color/button_color"
             android:text="@string/remove_set"
-            android:textColor="@color/white"
-            android:textColorLink="@color/button_color" />
+            android:textColor="@color/white" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
