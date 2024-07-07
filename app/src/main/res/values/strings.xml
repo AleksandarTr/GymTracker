@@ -7,12 +7,22 @@
     <string name="exercise_name">Exercise Name</string>
     <string name="add_set">Add set</string>
     <string name="remove_set">Remove set</string>
+
     <string name="date">Date</string>
     <string name="add_exercise">Add Exercise</string>
     <string name="remove_exercise">Remove Exercise</string>
     <string name="save">Save</string>
-    <string name="tabDescription">Select which exercise you would like to edit</string>
-    <string name="exerciseDisplayDescription">Details about each exercise are displayed here</string>
+    <string name="tab_description">Select which exercise you would like to edit</string>
+    <string name="exercise_display_description">Details about each exercise are displayed here</string>
+
+    <string name="set_count">Count</string>
+    <string name="set_weight">Weight</string>
+    <string-array name="set_unit">
+        <item>kg</item>
+        <item>lbs</item>
+    </string-array>
+    <string name="set_count_hint">Enter the number of repetitions done in this set</string>
+    <string name="set_weight_hint">Enter the weight used during this set</string>
 
     <string name="title_activity_workout">workoutActivity</string>
     <string name="tab_text_1">Tab 1</string>

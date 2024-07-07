@@ -25,15 +25,15 @@
         app:layout_constraintTop_toTopOf="parent"
         />
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
+    <android.widget.ListView
+        android:id="@+id/exerciseSets"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/exerciseNameField"></LinearLayout>
+        app:layout_constraintTop_toBottomOf="@+id/exerciseNameField"></android.widget.ListView>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -43,7 +43,7 @@
         style="?android:attr/buttonBarStyle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+        app:layout_constraintTop_toBottomOf="@+id/exerciseSets">
 
         <Button
             android:id="@+id/addSetButton"

@@ -8,7 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ListView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.isEmpty
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.example.gym_tracker_app_2.R
@@ -20,15 +22,16 @@ class ExerciseFragment(private val position: Int) : Fragment() {
     private val binding get() = _binding!!
     private var name = ""
 
-    private var exerciseNameField : EditText? = null
-    private var addSetButton : Button? = null
-    private var removeSetButton : Button? = null
-    private var parent : ViewPager? = null
+    private lateinit var exerciseNameField : EditText
+    private lateinit var addSetButton : Button
+    private lateinit var removeSetButton : Button
+    private lateinit var exerciseSets : ListView
+    private val sets : ArrayList<Set> = ArrayList()
 
     val tabTitle : String
         get() {
-            val nameParts = name.split(' ');
-            var result = "";
+            val nameParts = name.split(' ')
+            var result = ""
             for(part in nameParts) if(part.isNotEmpty()) result += part[0].uppercase()
             return result
         }
@@ -41,12 +44,14 @@ class ExerciseFragment(private val position: Int) : Fragment() {
         _binding = ExerciseLayoutBinding.inflate(inflater, container, false)
         val root = binding.root
 
-        exerciseNameField = root.findViewById(R.id.exerciseNameField)
-        addSetButton = root.findViewById(R.id.addSetButton)
-        removeSetButton = root.findViewById(R.id.removeSetButton)
+        exerciseNameField = binding.exerciseNameField
+        exerciseSets = binding.exerciseSets
+        addSetButton = binding.addSetButton
+        removeSetButton = binding.removeSetButton
+        removeSetButton.isEnabled = true
 
-        exerciseNameField?.setText(name)
-        exerciseNameField?.addTextChangedListener(object : TextWatcher {
+        exerciseNameField.setText(name)
+        exerciseNameField.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
             override fun onTextChanged(newName: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -61,6 +66,18 @@ class ExerciseFragment(private val position: Int) : Fragment() {
                 }
             }
         })
+
+        exerciseSets.adapter = context?.let { ExerciseDisplayAdapter(it, sets) }
+
+        addSetButton.setOnClickListener {
+            (exerciseSets.adapter as ExerciseDisplayAdapter?)?.addSet()
+            removeSetButton.isEnabled = true
+        }
+
+        removeSetButton.setOnClickListener{
+            (exerciseSets.adapter as ExerciseDisplayAdapter?)?.removeSet()
+            if(sets.isEmpty()) removeSetButton.isEnabled = false
+        }
 
         return root
     }

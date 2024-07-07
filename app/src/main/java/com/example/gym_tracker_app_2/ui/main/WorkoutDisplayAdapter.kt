@@ -5,19 +5,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 
-class SectionsPagerAdapter(private val context: Context, fm: FragmentManager) :
+class WorkoutDisplayAdapter(private val context: Context, fm: FragmentManager) :
     FragmentPagerAdapter(fm) {
 
-        private val exerciseFragments = ArrayList<ExerciseFragment>()
-
-    init {
-        exerciseFragments.add(ExerciseFragment(0))
-        exerciseFragments.add(ExerciseFragment(1))
-    }
+    private val exerciseFragments = ArrayList<ExerciseFragment>()
 
     override fun getItem(position: Int): Fragment {
-        // getItem is called to instantiate the fragment for the given page.
-        // Return a PlaceholderFragment.
         return exerciseFragments[position]
     }
 
@@ -31,5 +24,15 @@ class SectionsPagerAdapter(private val context: Context, fm: FragmentManager) :
 
     override fun getCount(): Int {
         return exerciseFragments.size
+    }
+
+    fun addExercise() {
+        exerciseFragments.add(ExerciseFragment(exerciseFragments.size))
+        notifyDataSetChanged()
+    }
+
+    fun removeExercise() {
+        exerciseFragments.removeLast()
+        notifyDataSetChanged()
     }
 }
