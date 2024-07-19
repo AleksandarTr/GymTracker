@@ -19,7 +19,7 @@ class WorkoutScreen : AppCompatActivity() {
         binding = WorkoutLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        sectionsPagerAdapter = WorkoutDisplayAdapter(this, supportFragmentManager)
+        sectionsPagerAdapter = WorkoutDisplayAdapter(supportFragmentManager)
         val viewPager: ViewPager = binding.exerciseDisplay
         viewPager.adapter = sectionsPagerAdapter
         val tabs: TabLayout = binding.exerciseTab

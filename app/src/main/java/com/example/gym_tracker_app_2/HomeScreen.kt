@@ -14,7 +14,7 @@ class HomeScreen : ComponentActivity() {
     }
 
     fun newWorkoutClick(view: View) {
-        val intent : Intent = Intent(applicationContext, WorkoutScreen::class.java)
+        val intent = Intent(applicationContext, WorkoutScreen::class.java)
         startActivity(intent)
     }
 }

@@ -60,7 +60,17 @@ class ExerciseDisplayAdapter(private val context: Context, private var sets: Arr
                 override fun afterTextChanged(text: Editable?) {}
 
                 override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {
-                    set.weight =  text.toString().toFloat()
+                    if(text.isNullOrEmpty() || text.toString().toFloatOrNull() == null) set.weight = 0f
+                    else set.weight = text.toString().toFloat()
+
+                    val isWhole = set.weight % 1f == 0f
+                    var moveCursor = true
+                    if(set.weight == 0f && setWeight.text.toString() != "0") setWeight.setText("0")
+                    else if(!isWhole && set.weight.toString() != setWeight.text.toString()) setWeight.setText(set.weight.toString())
+                    else if(isWhole && set.weight.toInt().toString() != setWeight.text.toString() && setWeight.text.last() != '.') setWeight.setText(set.weight.toInt().toString())
+                    else moveCursor = false
+
+                    if(moveCursor) setWeight.setSelection(setWeight.text.length)
                 }
             })
 

@@ -10,7 +10,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ListView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.view.isEmpty
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.example.gym_tracker_app_2.R
