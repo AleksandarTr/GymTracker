@@ -1,4 +1,4 @@
-package com.example.gym_tracker_app_2.ui.main
+package com.example.gym_tracker_app_2
 
 data class Set(val id: Long) {
     var count: Int = 0

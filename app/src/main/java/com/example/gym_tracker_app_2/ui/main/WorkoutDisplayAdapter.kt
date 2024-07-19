@@ -4,11 +4,18 @@ import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import com.example.gym_tracker_app_2.HomeScreen
 
-class WorkoutDisplayAdapter(fm: FragmentManager) :
+class WorkoutDisplayAdapter(fm: FragmentManager, val workoutID: Int) :
     FragmentPagerAdapter(fm) {
 
     private val exerciseFragments = ArrayList<ExerciseFragment>()
+
+    init {
+        val exerciseIDs = HomeScreen.databaseInterface.getWorkoutExercises(workoutID)
+        exerciseIDs.sort()
+        for(id in exerciseIDs) exerciseFragments.add(ExerciseFragment(exerciseFragments.size, id))
+    }
 
     override fun getItem(position: Int): Fragment {
         return exerciseFragments[position]

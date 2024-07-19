@@ -11,6 +11,7 @@ import android.widget.BaseAdapter
 import android.widget.EditText
 import android.widget.Spinner
 import com.example.gym_tracker_app_2.R
+import com.example.gym_tracker_app_2.Set
 
 class ExerciseDisplayAdapter(private val context: Context, private var sets: ArrayList<Set>) : BaseAdapter() {
     companion object {
@@ -65,6 +66,7 @@ class ExerciseDisplayAdapter(private val context: Context, private var sets: Arr
 
                     val isWhole = set.weight % 1f == 0f
                     var moveCursor = true
+
                     if(set.weight == 0f && setWeight.text.toString() != "0") setWeight.setText("0")
                     else if(!isWhole && set.weight.toString() != setWeight.text.toString()) setWeight.setText(set.weight.toString())
                     else if(isWhole && set.weight.toInt().toString() != setWeight.text.toString() && setWeight.text.last() != '.') setWeight.setText(set.weight.toInt().toString())

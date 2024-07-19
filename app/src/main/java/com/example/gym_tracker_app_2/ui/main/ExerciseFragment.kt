@@ -12,7 +12,9 @@ import android.widget.ListView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
+import com.example.gym_tracker_app_2.HomeScreen
 import com.example.gym_tracker_app_2.R
+import com.example.gym_tracker_app_2.Set
 import com.example.gym_tracker_app_2.databinding.ExerciseLayoutBinding
 import com.google.android.material.tabs.TabLayout
 
@@ -26,6 +28,13 @@ class ExerciseFragment(private val position: Int) : Fragment() {
     private lateinit var removeSetButton : Button
     private lateinit var exerciseSets : ListView
     private val sets : ArrayList<Set> = ArrayList()
+    private var id : Int = HomeScreen.databaseInterface.getNextExerciseID()
+
+    constructor(position: Int, id: Int) : this(position) {
+        this.id = id
+        this.name = HomeScreen.databaseInterface.getExerciseName(id) ?: return
+        sets.addAll(HomeScreen.databaseInterface.getExerciseSets(id))
+    }
 
     val tabTitle : String
         get() {
