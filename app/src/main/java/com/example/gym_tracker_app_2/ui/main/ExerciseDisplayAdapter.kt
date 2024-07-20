@@ -10,14 +10,11 @@ import android.widget.AdapterView
 import android.widget.BaseAdapter
 import android.widget.EditText
 import android.widget.Spinner
+import com.example.gym_tracker_app_2.HomeScreen
 import com.example.gym_tracker_app_2.R
 import com.example.gym_tracker_app_2.Set
 
 class ExerciseDisplayAdapter(private val context: Context, private var sets: ArrayList<Set>) : BaseAdapter() {
-    companion object {
-        private var nextId : Long = 0
-    }
-
     override fun getCount(): Int {
         return sets.size
     }
@@ -38,7 +35,7 @@ class ExerciseDisplayAdapter(private val context: Context, private var sets: Arr
             val setCount = view!!.findViewById<EditText>(R.id.setCount)
             val setWeight = view.findViewById<EditText>(R.id.setWeight)
             val setUnit = view.findViewById<Spinner>(R.id.setUnit)
-            val set = getItem(index)
+            val set = getItem(sets.size - 1)
 
             setCount.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {}
@@ -96,7 +93,7 @@ class ExerciseDisplayAdapter(private val context: Context, private var sets: Arr
     }
 
     fun addSet() {
-        sets.add(Set(nextId++))
+        sets.add(Set(HomeScreen.databaseInterface.getNextSetID()))
         notifyDataSetChanged()
     }
 

@@ -1,5 +1,6 @@
 package com.example.gym_tracker_app_2
 
+import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
@@ -9,6 +10,10 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
         const val DATABASE_NAME = "workoutDatabase.db"
         const val DATABASE_VERSION = 1
     }
+
+    private var workoutID = -1
+    private var exerciseID = -1
+    private var setID = -1L
 
     override fun onCreate(db: SQLiteDatabase) {
         val WORKOUT_CREATE =
@@ -20,7 +25,7 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
         val EXERCISE_TYPE_CREATE =
             "CREATE TABLE ExerciseType (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    "name TEXT NOT NULL)"
+                    "name TEXT UNIQUE NOT NULL)"
 
         val EXERCISE_CREATE =
             "CREATE TABLE Exercise (" +
@@ -46,15 +51,19 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
     }
 
     fun getNextWorkoutID() : Int {
-        var nextId = 0
-        val cursor = readableDatabase.rawQuery("Select MAX(id) from Workout", null)
-        if(cursor.count == 1) {
-            cursor.moveToFirst()
-            nextId = cursor.getInt(0) + 1
-        }
-        cursor.close()
+        if(workoutID == -1) {
+            var nextId = 0
+            val cursor = readableDatabase.rawQuery("Select MAX(id) from Workout", null)
+            if (cursor.count == 1) {
+                cursor.moveToFirst()
+                nextId = cursor.getInt(0) + 1
+            }
+            cursor.close()
 
-        return nextId
+            workoutID = nextId
+            return nextId
+        }
+        return ++workoutID
     }
 
     fun getExerciseName(id: Int): String? {
@@ -102,14 +111,89 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
     }
 
     fun getNextExerciseID(): Int {
-        var nextId = 0
-        val cursor = readableDatabase.rawQuery("Select MAX(id) from Exercise", null)
-        if(cursor.count == 1) {
+        if(exerciseID == -1) {
+            var nextId = 0
+            val cursor = readableDatabase.rawQuery("Select MAX(id) from Exercise", null)
+            if (cursor.count == 1) {
+                cursor.moveToFirst()
+                nextId = cursor.getInt(0) + 1
+            }
+            cursor.close()
+
+            exerciseID = nextId
+            return nextId
+        }
+        return ++exerciseID
+    }
+
+    fun getNextSetID(): Long {
+        if(setID == -1L) {
+            var nextId = 0L
+            val cursor = readableDatabase.rawQuery("Select MAX(id) from ExerciseSet", null)
+            if (cursor.count == 1) {
+                cursor.moveToFirst()
+                nextId = cursor.getLong(0) + 1
+            }
+            cursor.close()
+
+            setID = nextId
+            return nextId
+        }
+        return ++setID
+    }
+
+    fun updateWorkout(id: Int, name: String, date: String) {
+        val values = ContentValues()
+        values.put("name", name)
+        values.put("date", date)
+        if(writableDatabase.update("Workout", values, "id = ?", arrayOf(id.toString())) < 1) {
+            values.put("id", id)
+            writableDatabase.insert("Workout", null, values)
+        }
+    }
+
+    private fun getExerciseTypeID(name: String): Int {
+        var result = -1
+        val cursor = readableDatabase.rawQuery("Select id from ExerciseType where name = ?", arrayOf(name))
+        if(cursor.count > 0) {
             cursor.moveToFirst()
-            nextId = cursor.getInt(0) + 1
+            result = cursor.getInt(0)
         }
         cursor.close()
+        if(result != -1) return result
 
-        return nextId
+        val idCursor = readableDatabase.rawQuery("Select COALESCE(MAX(id), 0) from ExerciseType", null)
+        if(cursor.moveToFirst()) result = cursor.getInt(0)
+        else result = 0
+        idCursor.close()
+
+        val values = ContentValues()
+        values.put("id", result)
+        values.put("name", name)
+        writableDatabase.insert("ExerciseType", null, values)
+        return result
+    }
+
+    fun updateExercise(id: Int, name: String, workoutID: Int) {
+        val values = ContentValues()
+        values.put("exerciseType", getExerciseTypeID(name))
+        values.put("workoutID", workoutID)
+
+        if(writableDatabase.update("Exercise", values, "id = ?", arrayOf(id.toString())) < 1) {
+            values.put("id", id.toString())
+            writableDatabase.insert("Exercise", null, values)
+        }
+    }
+
+    fun updateSet(id: Long, count: Int, weight: Float, exerciseID: Int) {
+        val values = ContentValues()
+        values.put("count", count)
+        values.put("weight", weight)
+        values.put("exerciseID", exerciseID)
+
+        if(writableDatabase.update("ExerciseSet", values, "id = ?", arrayOf(id.toString())) < 1) {
+            values.put("id", id)
+            writableDatabase.insert("ExerciseSet", null, values)
+        }
     }
 }

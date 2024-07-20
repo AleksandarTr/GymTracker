@@ -17,6 +17,9 @@ import com.example.gym_tracker_app_2.R
 import com.example.gym_tracker_app_2.Set
 import com.example.gym_tracker_app_2.databinding.ExerciseLayoutBinding
 import com.google.android.material.tabs.TabLayout
+import java.math.BigDecimal
+import java.math.RoundingMode
+import kotlin.math.roundToInt
 
 class ExerciseFragment(private val position: Int) : Fragment() {
     private var _binding: ExerciseLayoutBinding? = null
@@ -93,5 +96,23 @@ class ExerciseFragment(private val position: Int) : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    companion object {
+        private const val kg = 0
+        private const val lbs = 1
+
+        private val conversionTable = arrayOf(
+            arrayOf(1f, 2.205f),
+            arrayOf(0.454f, 1f)
+        )
+    }
+
+    fun save(workoutID: Int) {
+        HomeScreen.databaseInterface.updateExercise(id, name, workoutID)
+        for(set in sets) {
+            val weight = (set.weight * conversionTable[set.unit.toInt()][kg] * 100).roundToInt() / 100f
+            HomeScreen.databaseInterface.updateSet(set.id, set.count, weight, id)
+        }
     }
 }

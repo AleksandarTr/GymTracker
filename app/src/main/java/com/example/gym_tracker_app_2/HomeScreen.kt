@@ -16,6 +16,10 @@ class HomeScreen : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home_screen_layout)
         databaseInterface = DatabaseInterface(applicationContext)
+        databaseInterface.writableDatabase.execSQL("Delete from Workout")
+        databaseInterface.writableDatabase.execSQL("Delete from Exercise")
+        databaseInterface.writableDatabase.execSQL("Delete from ExerciseType")
+        databaseInterface.writableDatabase.execSQL("Delete from ExerciseSet")
     }
 
     fun newWorkoutClick(view: View) {

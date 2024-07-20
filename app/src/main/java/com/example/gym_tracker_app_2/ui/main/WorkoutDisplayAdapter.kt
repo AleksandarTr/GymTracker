@@ -42,4 +42,8 @@ class WorkoutDisplayAdapter(fm: FragmentManager, val workoutID: Int) :
         exerciseFragments.removeLast()
         notifyDataSetChanged()
     }
+
+    fun save() {
+        for(exercise in exerciseFragments) exercise.save(workoutID)
+    }
 }

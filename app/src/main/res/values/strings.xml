@@ -9,6 +9,8 @@
     <string name="remove_set">Remove set</string>
 
     <string name="date">Date</string>
+    <string name="workout_name">Workout Name</string>
+    <string name="workout_saved">The workout has been saved successfully.</string>
     <string name="add_exercise">Add Exercise</string>
     <string name="remove_exercise">Remove Exercise</string>
     <string name="save">Save</string>
@@ -27,6 +29,4 @@
     <string name="title_activity_workout">workoutActivity</string>
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
-
-    <string name="workout_saved">The workout has been saved successfully.</string>
 </resources>
