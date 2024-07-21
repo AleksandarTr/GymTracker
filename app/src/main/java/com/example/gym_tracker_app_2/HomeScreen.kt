@@ -2,10 +2,8 @@ package com.example.gym_tracker_app_2
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.ComponentActivity
-import androidx.activity.enableEdgeToEdge
 
 class HomeScreen : ComponentActivity() {
     companion object {
@@ -16,15 +14,21 @@ class HomeScreen : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home_screen_layout)
         databaseInterface = DatabaseInterface(applicationContext)
-        databaseInterface.writableDatabase.execSQL("Delete from Workout")
-        databaseInterface.writableDatabase.execSQL("Delete from Exercise")
-        databaseInterface.writableDatabase.execSQL("Delete from ExerciseType")
-        databaseInterface.writableDatabase.execSQL("Delete from ExerciseSet")
+
+//        databaseInterface.writableDatabase.execSQL("Delete from Workout")
+//        databaseInterface.writableDatabase.execSQL("Delete from Exercise")
+//        databaseInterface.writableDatabase.execSQL("Delete from ExerciseType")
+//        databaseInterface.writableDatabase.execSQL("Delete from ExerciseSet")
     }
 
     fun newWorkoutClick(view: View) {
         val intent = Intent(applicationContext, WorkoutScreen::class.java)
         intent.putExtra("workoutID", databaseInterface.getNextWorkoutID())
+        startActivity(intent)
+    }
+
+    fun workoutHistoryClick(view: View) {
+        val intent = Intent(applicationContext, HistoryScreen::class.java)
         startActivity(intent)
     }
 }

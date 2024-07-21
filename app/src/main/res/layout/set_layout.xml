@@ -6,7 +6,7 @@
 
     <EditText
         android:id="@+id/setCount"
-        android:layout_width="match_parent"
+        android:layout_width="20dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:ems="10"
@@ -17,7 +17,7 @@
 
     <EditText
         android:id="@+id/setWeight"
-        android:layout_width="match_parent"
+        android:layout_width="20dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:ems="10"
@@ -28,9 +28,15 @@
 
     <Spinner
         android:id="@+id/setUnit"
-        android:layout_width="match_parent"
+        android:layout_width="5dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:entries="@array/set_unit"
         android:gravity="center_horizontal" />
+
+    <TextView
+        android:id="@+id/setTimeStamp"
+        android:layout_width="5dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
 </LinearLayout>

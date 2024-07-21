@@ -19,6 +19,12 @@
             android:screenOrientation="portrait">
         </activity>
         <activity
+            android:name=".HistoryScreen"
+            android:exported="true"
+            android:theme="@style/Theme.GymTrackerApp2"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
             android:name=".HomeScreen"
             android:exported="true"
             android:screenOrientation="portrait"

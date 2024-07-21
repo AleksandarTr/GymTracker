@@ -4,6 +4,10 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.os.Build
+import androidx.annotation.RequiresApi
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     companion object {
@@ -207,5 +211,32 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
         cursor.close()
 
         return exerciseTypes
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getWorkouts(): ArrayList<Workout> {
+        val result = ArrayList<Workout>()
+
+        val cursor = readableDatabase.rawQuery("Select id, name, date from Workout", null)
+        while(cursor.moveToNext())
+            result.add(Workout(cursor.getInt(0), cursor.getString(1),
+                LocalDate.parse(cursor.getString(2), DateTimeFormatter.ofPattern("dd.MM.yyyy"))))
+        cursor.close()
+
+        return result
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getWorkout(id: Int): Workout? {
+        val cursor = readableDatabase.rawQuery("Select name, date from Workout where id = ?", arrayOf(id.toString()))
+        if(cursor.count == 0) {
+            cursor.close()
+            return null
+        }
+
+        cursor.moveToFirst()
+        val result = Workout(id, cursor.getString(0), LocalDate.parse(cursor.getString(1), DateTimeFormatter.ofPattern("dd.MM.yyyy")))
+        cursor.close()
+        return result
     }
 }

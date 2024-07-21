@@ -1,6 +1,7 @@
 package com.example.gym_tracker_app_2.ui.main
 
 import android.content.Context
+import android.os.Build
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -10,9 +11,12 @@ import android.widget.AdapterView
 import android.widget.BaseAdapter
 import android.widget.EditText
 import android.widget.Spinner
+import android.widget.TextView
+import androidx.annotation.RequiresApi
 import com.example.gym_tracker_app_2.HomeScreen
 import com.example.gym_tracker_app_2.R
 import com.example.gym_tracker_app_2.Set
+import java.time.format.DateTimeFormatter
 
 class ExerciseDisplayAdapter(private val context: Context, private var sets: ArrayList<Set>) : BaseAdapter() {
     override fun getCount(): Int {
@@ -27,6 +31,7 @@ class ExerciseDisplayAdapter(private val context: Context, private var sets: Arr
         return sets[index].id
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun getView(index: Int, convertView: View?, parent: ViewGroup?): View {
         var view = convertView
         if (view == null) {
@@ -35,7 +40,8 @@ class ExerciseDisplayAdapter(private val context: Context, private var sets: Arr
             val setCount = view!!.findViewById<EditText>(R.id.setCount)
             val setWeight = view.findViewById<EditText>(R.id.setWeight)
             val setUnit = view.findViewById<Spinner>(R.id.setUnit)
-            val set = getItem(sets.size - 1)
+            val setTimeStamp = view.findViewById<TextView>(R.id.setTimeStamp)
+            val set = getItem(index)
 
             setCount.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {}
@@ -82,6 +88,8 @@ class ExerciseDisplayAdapter(private val context: Context, private var sets: Arr
                     setUnit.setSelection(0)
                 }
             }
+
+            setTimeStamp.text = set.timeStamp.format(DateTimeFormatter.ofPattern("HH:mm"))
 
             setCount.setText(set.count.toString())
             if(set.weight % 1f == 0f) setWeight.setText(set.weight.toInt().toString())

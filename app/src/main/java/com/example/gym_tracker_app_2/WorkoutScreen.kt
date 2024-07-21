@@ -47,8 +47,14 @@ class WorkoutScreen : AppCompatActivity() {
             removeExerciseButton.isEnabled = true
         }
 
-        val dateFiled : EditText = binding.dateField
-        dateFiled.setText(LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")).toString())
+        val workout = HomeScreen.databaseInterface.getWorkout(intent.getIntExtra("workoutID", -1))
+
+        val nameField : EditText = binding.nameField
+        nameField.setText(workout?.name)
+
+        val dateField : EditText = binding.dateField
+        if(workout == null) dateField.setText(LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")).toString())
+        else dateField.setText(workout.date.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")))
     }
 
     fun saveWorkout(view: View) {
