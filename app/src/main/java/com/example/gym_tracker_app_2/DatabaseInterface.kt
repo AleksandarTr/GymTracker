@@ -14,6 +14,7 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
     private var workoutID = -1
     private var exerciseID = -1
     private var setID = -1L
+    private val exerciseTypes = ArrayList<String>()
 
     override fun onCreate(db: SQLiteDatabase) {
         val WORKOUT_CREATE =
@@ -167,6 +168,7 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
         else result = 0
         idCursor.close()
 
+        exerciseTypes.add(name)
         val values = ContentValues()
         values.put("id", result)
         values.put("name", name)
@@ -195,5 +197,15 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
             values.put("id", id)
             writableDatabase.insert("ExerciseSet", null, values)
         }
+    }
+
+    fun getExerciseTypes(): ArrayList<String> {
+        if(exerciseTypes.isNotEmpty()) return exerciseTypes
+
+        val cursor = readableDatabase.rawQuery("Select name from ExerciseType", null)
+        while (cursor.moveToNext()) exerciseTypes.add(cursor.getString(0))
+        cursor.close()
+
+        return exerciseTypes
     }
 }

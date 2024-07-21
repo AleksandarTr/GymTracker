@@ -6,6 +6,8 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ListView
@@ -26,7 +28,7 @@ class ExerciseFragment(private val position: Int) : Fragment() {
     private val binding get() = _binding!!
     private var name = ""
 
-    private lateinit var exerciseNameField : EditText
+    private lateinit var exerciseNameField : AutoCompleteTextView
     private lateinit var addSetButton : Button
     private lateinit var removeSetButton : Button
     private lateinit var exerciseSets : ListView
@@ -77,6 +79,12 @@ class ExerciseFragment(private val position: Int) : Fragment() {
                 }
             }
         })
+        if(this.context != null) {
+            val exerciseAdapter: ArrayAdapter<String> = ArrayAdapter(this.requireContext(),
+                androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
+                HomeScreen.databaseInterface.getExerciseTypes())
+            exerciseNameField.setAdapter(exerciseAdapter)
+        }
 
         exerciseSets.adapter = context?.let { ExerciseDisplayAdapter(it, sets) }
 
