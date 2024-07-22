@@ -31,10 +31,68 @@ class ExerciseDisplayAdapter(private val context: Context, private var sets: Arr
         return sets[index].id
     }
 
+    private class CountChangeListener(val set: Set, val setCount : EditText) : TextWatcher {
+        override fun beforeTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {}
+
+        override fun afterTextChanged(text: Editable?) {}
+
+        override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {
+            if(text.isNullOrEmpty()) set.count = 0
+            else set.count = text.toString().toInt()
+            if(set.count.toString() != setCount.text.toString()) {
+                setCount.setText(set.count.toString())
+                setCount.setSelection(setCount.text.length)
+            }
+        }
+    }
+
+    private class WeightChangeListener(val set: Set, val setWeight : EditText) : TextWatcher {
+        override fun beforeTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {}
+
+        override fun afterTextChanged(text: Editable?) {}
+
+        override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {
+            if (text.isNullOrEmpty() || text.toString()
+                    .toFloatOrNull() == null
+            ) set.weight = 0f
+            else set.weight = text.toString().toFloat()
+
+            val isWhole = set.weight % 1f == 0f
+            var moveCursor = true
+
+            if (set.weight == 0f && setWeight.text.toString() != "0") setWeight.setText("0")
+            else if (!isWhole && set.weight.toString() != setWeight.text.toString()) setWeight.setText(
+                set.weight.toString()
+            )
+            else if (isWhole && set.weight.toInt()
+                    .toString() != setWeight.text.toString() && setWeight.text.last() != '.'
+            ) setWeight.setText(set.weight.toInt().toString())
+            else moveCursor = false
+
+            if (moveCursor) setWeight.setSelection(setWeight.text.length)
+        }
+    }
+
+    private class UnitChangeListener(val set: Set, val setUnit: Spinner) : AdapterView.OnItemSelectedListener{
+        override fun onItemSelected(
+            parent: AdapterView<*>?,
+            selected: View?,
+            index: Int,
+            id: Long
+        ) {
+            set.unit = index.toByte()
+        }
+
+        override fun onNothingSelected(p0: AdapterView<*>?) {
+            setUnit.setSelection(0)
+        }
+    }
+
     @RequiresApi(Build.VERSION_CODES.O)
-    override fun getView(index: Int, convertView: View?, parent: ViewGroup?): View {
+    override fun getView(index: Int, convertView: View?, parent: ViewGroup?): View? {
         var view = convertView
-        if (view == null) {
+
+        if (convertView == null) {
             view = LayoutInflater.from(context).inflate(R.layout.set_layout, parent, false)
 
             val setCount = view!!.findViewById<EditText>(R.id.setCount)
@@ -43,70 +101,27 @@ class ExerciseDisplayAdapter(private val context: Context, private var sets: Arr
             val setTimeStamp = view.findViewById<TextView>(R.id.setTimeStamp)
             val set = getItem(index)
 
-            setCount.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {}
-
-                override fun afterTextChanged(text: Editable?) {}
-
-                override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {
-                    if(text.isNullOrEmpty()) set.count = 0
-                    else set.count = text.toString().toInt()
-                    if(set.count.toString() != setCount.text.toString()) {
-                        setCount.setText(set.count.toString())
-                        setCount.setSelection(setCount.text.length)
-                    }
-                }
-            })
-
-            setWeight.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {}
-
-                override fun afterTextChanged(text: Editable?) {}
-
-                override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {
-                    if(text.isNullOrEmpty() || text.toString().toFloatOrNull() == null) set.weight = 0f
-                    else set.weight = text.toString().toFloat()
-
-                    val isWhole = set.weight % 1f == 0f
-                    var moveCursor = true
-
-                    if(set.weight == 0f && setWeight.text.toString() != "0") setWeight.setText("0")
-                    else if(!isWhole && set.weight.toString() != setWeight.text.toString()) setWeight.setText(set.weight.toString())
-                    else if(isWhole && set.weight.toInt().toString() != setWeight.text.toString() && setWeight.text.last() != '.') setWeight.setText(set.weight.toInt().toString())
-                    else moveCursor = false
-
-                    if(moveCursor) setWeight.setSelection(setWeight.text.length)
-                }
-            })
-
-            setUnit.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(parent: AdapterView<*>?, selected: View?, index: Int, id: Long) {
-                    set.unit = index.toByte()
-                }
-
-                override fun onNothingSelected(p0: AdapterView<*>?) {
-                    setUnit.setSelection(0)
-                }
-            }
-
-            setTimeStamp.text = set.timeStamp.format(DateTimeFormatter.ofPattern("HH:mm"))
-
             setCount.setText(set.count.toString())
-            if(set.weight % 1f == 0f) setWeight.setText(set.weight.toInt().toString())
+            if (set.weight % 1f == 0f) setWeight.setText(set.weight.toInt().toString())
             else setWeight.setText(set.weight.toString())
             setUnit.setSelection(set.unit.toInt())
+            setTimeStamp.text = set.timeStamp.format(DateTimeFormatter.ofPattern("HH:mm"))
+
+            setCount.addTextChangedListener(CountChangeListener(set, setCount))
+            setWeight.addTextChangedListener(WeightChangeListener(set, setWeight))
+            setUnit.onItemSelectedListener = UnitChangeListener(set, setUnit)
         }
 
         return view
     }
 
     fun addSet() {
-        sets.add(Set(HomeScreen.databaseInterface.getNextSetID()))
+        sets.add(0, Set(HomeScreen.databaseInterface.getNextSetID()))
         notifyDataSetChanged()
     }
 
     fun removeSet() {
-        sets.removeLast()
+        sets.removeFirst()
         notifyDataSetChanged()
     }
 }

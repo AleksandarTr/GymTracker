@@ -57,9 +57,10 @@ class WorkoutScreen : AppCompatActivity() {
         else dateField.setText(workout.date.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")))
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun saveWorkout(view: View) {
         HomeScreen.databaseInterface.updateWorkout(intent.getIntExtra("workoutID", -1),
-            binding.nameField.text.toString(), binding.dateField.text.toString())
+            binding.nameField.text.toString(), LocalDate.parse(binding.dateField.text.toString(), DateTimeFormatter.ofPattern("dd.MM.yyyy")))
         sectionsPagerAdapter.save()
 
         val db = HomeScreen.databaseInterface.writableDatabase

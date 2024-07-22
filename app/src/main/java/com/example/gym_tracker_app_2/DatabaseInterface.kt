@@ -147,10 +147,11 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
         return ++setID
     }
 
-    fun updateWorkout(id: Int, name: String, date: String) {
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun updateWorkout(id: Int, name: String, date: LocalDate) {
         val values = ContentValues()
         values.put("name", name)
-        values.put("date", date)
+        values.put("date", date.format(DateTimeFormatter.ofPattern("yyyy.MM.dd")))
         if(writableDatabase.update("Workout", values, "id = ?", arrayOf(id.toString())) < 1) {
             values.put("id", id)
             writableDatabase.insert("Workout", null, values)
@@ -167,8 +168,8 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
         cursor.close()
         if(result != -1) return result
 
-        val idCursor = readableDatabase.rawQuery("Select COALESCE(MAX(id), 0) from ExerciseType", null)
-        if(cursor.moveToFirst()) result = cursor.getInt(0)
+        val idCursor = readableDatabase.rawQuery("Select coalesce(MAX(id), 0) from ExerciseType", null)
+        if(idCursor.moveToFirst()) result = idCursor.getInt(0) + 1
         else result = 0
         idCursor.close()
 
@@ -220,7 +221,7 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
         val cursor = readableDatabase.rawQuery("Select id, name, date from Workout", null)
         while(cursor.moveToNext())
             result.add(Workout(cursor.getInt(0), cursor.getString(1),
-                LocalDate.parse(cursor.getString(2), DateTimeFormatter.ofPattern("dd.MM.yyyy"))))
+                LocalDate.parse(cursor.getString(2), DateTimeFormatter.ofPattern("yyyy.MM.dd"))))
         cursor.close()
 
         return result
@@ -235,7 +236,7 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
         }
 
         cursor.moveToFirst()
-        val result = Workout(id, cursor.getString(0), LocalDate.parse(cursor.getString(1), DateTimeFormatter.ofPattern("dd.MM.yyyy")))
+        val result = Workout(id, cursor.getString(0), LocalDate.parse(cursor.getString(1), DateTimeFormatter.ofPattern("yyyy.MM.dd")))
         cursor.close()
         return result
     }

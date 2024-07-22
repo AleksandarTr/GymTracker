@@ -19,6 +19,7 @@ class HistoryScreen : ComponentActivity() {
         setContentView(R.layout.workout_history_layout)
         workouts.clear()
         workouts.addAll(HomeScreen.databaseInterface.getWorkouts())
+        workouts.sortByDescending { workout -> workout.date }
 
         val workoutContainer: RecyclerView = findViewById(R.id.workoutContainer)
         workoutContainer.layoutManager = LinearLayoutManager(this)
