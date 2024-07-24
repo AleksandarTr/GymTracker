@@ -11,6 +11,7 @@ import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ListView
+import android.widget.TextView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
@@ -29,6 +30,7 @@ class ExerciseFragment(private val position: Int) : Fragment() {
     private var name = ""
 
     private lateinit var exerciseNameField : AutoCompleteTextView
+    private lateinit var prDisplay : TextView
     private lateinit var addSetButton : Button
     private lateinit var removeSetButton : Button
     private lateinit var exerciseSets : ListView
@@ -58,6 +60,7 @@ class ExerciseFragment(private val position: Int) : Fragment() {
         val root = binding.root
 
         exerciseNameField = binding.exerciseNameField
+        prDisplay = binding.prDisplay
         exerciseSets = binding.exerciseSets
         addSetButton = binding.addSetButton
         removeSetButton = binding.removeSetButton
@@ -69,6 +72,22 @@ class ExerciseFragment(private val position: Int) : Fragment() {
 
             override fun onTextChanged(newName: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 name = newName.toString()
+                val exerciseID = HomeScreen.databaseInterface.getExerciseTypeID(name, false)
+                if(exerciseID != null) {
+                    val exercisePRID = HomeScreen.databaseInterface.getExercisePR(exerciseID)
+                    val lastExerciseID = HomeScreen.databaseInterface.getLastExercise(exerciseID)
+                    if(exercisePRID == null || lastExerciseID == null) return
+
+                    val exercisePR = HomeScreen.databaseInterface.getExercise(exercisePRID)
+                    val lastExercise = HomeScreen.databaseInterface.getExercise(lastExerciseID)
+
+                    var prDisplayText = "Last: "
+                    for(set in lastExercise) prDisplayText += "${set.count}x${set.weight} "
+                    prDisplayText += "\nPR: "
+                    for(set in exercisePR) prDisplayText += "${set.count}x${set.weight} "
+
+                    prDisplay.text = prDisplayText
+                }
             }
 
             override fun afterTextChanged(p0: Editable?) {

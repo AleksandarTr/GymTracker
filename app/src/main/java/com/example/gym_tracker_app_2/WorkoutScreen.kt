@@ -23,7 +23,6 @@ class WorkoutScreen : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        HomeScreen.databaseInterface.writableDatabase.beginTransaction()
 
         binding = WorkoutLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -59,23 +58,19 @@ class WorkoutScreen : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun saveWorkout(view: View) {
+        val db = HomeScreen.databaseInterface.writableDatabase
+        db.beginTransaction()
+
         HomeScreen.databaseInterface.updateWorkout(intent.getIntExtra("workoutID", -1),
             binding.nameField.text.toString(), LocalDate.parse(binding.dateField.text.toString(), DateTimeFormatter.ofPattern("dd.MM.yyyy")))
         sectionsPagerAdapter.save()
 
-        val db = HomeScreen.databaseInterface.writableDatabase
         db.setTransactionSuccessful()
         db.endTransaction()
-        db.beginTransaction()
 
         val dialog = AlertDialog.Builder(this)
         dialog.setMessage(R.string.workout_saved)
         dialog.setPositiveButton("Ok") { _, _ ->}
         dialog.create().show()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        HomeScreen.databaseInterface.writableDatabase.endTransaction()
     }
 }

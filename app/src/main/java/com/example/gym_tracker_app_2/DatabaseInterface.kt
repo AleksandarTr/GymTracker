@@ -158,7 +158,7 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
         }
     }
 
-    private fun getExerciseTypeID(name: String): Int {
+    fun getExerciseTypeID(name: String, addExercise: Boolean): Int? {
         var result = -1
         val cursor = readableDatabase.rawQuery("Select id from ExerciseType where name = ?", arrayOf(name))
         if(cursor.count > 0) {
@@ -168,9 +168,11 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
         cursor.close()
         if(result != -1) return result
 
+        if(!addExercise) return null
+
         val idCursor = readableDatabase.rawQuery("Select coalesce(MAX(id), 0) from ExerciseType", null)
-        if(idCursor.moveToFirst()) result = idCursor.getInt(0) + 1
-        else result = 0
+        result = if(idCursor.moveToFirst()) idCursor.getInt(0) + 1
+        else 0
         idCursor.close()
 
         exerciseTypes.add(name)
@@ -183,7 +185,7 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
 
     fun updateExercise(id: Int, name: String, workoutID: Int) {
         val values = ContentValues()
-        values.put("exerciseType", getExerciseTypeID(name))
+        values.put("exerciseType", getExerciseTypeID(name, true))
         values.put("workoutID", workoutID)
 
         if(writableDatabase.update("Exercise", values, "id = ?", arrayOf(id.toString())) < 1) {
@@ -237,6 +239,55 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
 
         cursor.moveToFirst()
         val result = Workout(id, cursor.getString(0), LocalDate.parse(cursor.getString(1), DateTimeFormatter.ofPattern("yyyy.MM.dd")))
+        cursor.close()
+        return result
+    }
+
+    fun getExercisePR(id: Int) : Int? {
+        val cursor = readableDatabase.rawQuery("Select E.id, Sum(S.count * S.weight * S.weight) as Load " +
+                "from Exercise as E join ExerciseSet as S on E.id = S.exerciseID " +
+                "where E.exerciseType = ? " +
+                "group by E.id " +
+                "order by Load Desc", arrayOf(id.toString()))
+        if(cursor.moveToFirst()) {
+            val result = cursor.getInt(0)
+            cursor.close()
+            return result
+        }
+
+        cursor.close()
+        return null
+    }
+
+    fun getLastExercise(id: Int): Int? {
+        val cursor = readableDatabase.rawQuery("Select E.id " +
+                "from Exercise as E join Workout as W on E.workoutID = W.id " +
+                "where exerciseType = ? " +
+                "order by date DESC", arrayOf(id.toString()))
+        if(cursor.moveToFirst()) {
+            val result = cursor.getInt(0)
+            cursor.close()
+            return result
+        }
+
+        cursor.close()
+        return null
+    }
+
+    fun getExercise(id: Int): ArrayList<Set> {
+        val cursor = readableDatabase.rawQuery("Select S.id, count, weight " +
+                "from Exercise as E join ExerciseSet as S on E.id = S.ExerciseID " +
+                "where E.id = ?" +
+                "order by S.id ASC", arrayOf(id.toString()))
+
+        val result = ArrayList<Set>()
+        while(cursor.moveToNext()) {
+            val set = Set(cursor.getLong(0))
+            set.count = cursor.getInt(1)
+            set.weight = cursor.getFloat(2)
+            result.add(set)
+        }
+
         cursor.close()
         return result
     }

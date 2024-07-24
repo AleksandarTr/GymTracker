@@ -89,39 +89,35 @@ class ExerciseDisplayAdapter(private val context: Context, private var sets: Arr
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override fun getView(index: Int, convertView: View?, parent: ViewGroup?): View? {
-        var view = convertView
+    override fun getView(index: Int, convertView: View?, parent: ViewGroup?): View {
+        val view = LayoutInflater.from(context).inflate(R.layout.set_layout, parent, false)
 
-        if (convertView == null) {
-            view = LayoutInflater.from(context).inflate(R.layout.set_layout, parent, false)
+        val setCount = view!!.findViewById<EditText>(R.id.setCount)
+        val setWeight = view.findViewById<EditText>(R.id.setWeight)
+        val setUnit = view.findViewById<Spinner>(R.id.setUnit)
+        val setTimeStamp = view.findViewById<TextView>(R.id.setTimeStamp)
+        val set = getItem(index)
 
-            val setCount = view!!.findViewById<EditText>(R.id.setCount)
-            val setWeight = view.findViewById<EditText>(R.id.setWeight)
-            val setUnit = view.findViewById<Spinner>(R.id.setUnit)
-            val setTimeStamp = view.findViewById<TextView>(R.id.setTimeStamp)
-            val set = getItem(index)
+        setCount.setText(set.count.toString())
+        if (set.weight % 1f == 0f) setWeight.setText(set.weight.toInt().toString())
+        else setWeight.setText(set.weight.toString())
+        setUnit.setSelection(set.unit.toInt())
+        setTimeStamp.text = set.timeStamp.format(DateTimeFormatter.ofPattern("HH:mm"))
 
-            setCount.setText(set.count.toString())
-            if (set.weight % 1f == 0f) setWeight.setText(set.weight.toInt().toString())
-            else setWeight.setText(set.weight.toString())
-            setUnit.setSelection(set.unit.toInt())
-            setTimeStamp.text = set.timeStamp.format(DateTimeFormatter.ofPattern("HH:mm"))
-
-            setCount.addTextChangedListener(CountChangeListener(set, setCount))
-            setWeight.addTextChangedListener(WeightChangeListener(set, setWeight))
-            setUnit.onItemSelectedListener = UnitChangeListener(set, setUnit)
-        }
+        setCount.addTextChangedListener(CountChangeListener(set, setCount))
+        setWeight.addTextChangedListener(WeightChangeListener(set, setWeight))
+        setUnit.onItemSelectedListener = UnitChangeListener(set, setUnit)
 
         return view
     }
 
     fun addSet() {
-        sets.add(0, Set(HomeScreen.databaseInterface.getNextSetID()))
+        sets.add(Set(HomeScreen.databaseInterface.getNextSetID()))
         notifyDataSetChanged()
     }
 
     fun removeSet() {
-        sets.removeFirst()
+        sets.removeLast()
         notifyDataSetChanged()
     }
 }
