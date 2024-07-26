@@ -1,5 +1,6 @@
 [versions]
 agp = "8.5.0"
+chartsAndroid = "1.5.3"
 kotlin = "1.9.0"
 coreKtx = "1.10.1"
 junit = "4.13.2"
@@ -18,6 +19,7 @@ lifecycleViewmodelKtx = "2.8.3"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+charts-android = { module = "com.diamondedge:charts-android", version.ref = "chartsAndroid" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }

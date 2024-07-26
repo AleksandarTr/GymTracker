@@ -31,4 +31,9 @@ class HomeScreen : ComponentActivity() {
         val intent = Intent(applicationContext, HistoryScreen::class.java)
         startActivity(intent)
     }
+
+    fun statsClick(view: View) {
+        val intent = Intent(applicationContext, ExerciseScreen::class.java)
+        startActivity(intent)
+    }
 }
