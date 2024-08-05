@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <TextView
+        android:id="@+id/missingData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/no_data"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/periodSelector" />
+
     <com.patrykandpatrick.vico.views.cartesian.CartesianChartView
-        android:id="@+id/ExerciseChart"
+        android:id="@+id/exerciseChart"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -15,6 +27,19 @@
         app:chartZoomEnabled="true"
         app:showBottomAxis="true"
         app:showStartAxis="true"
-        app:layers="line"/>
+        app:layers="line">
+
+    </com.patrykandpatrick.vico.views.cartesian.CartesianChartView>
+
+    <Spinner
+        android:id="@+id/periodSelector"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:entries="@array/stats_period"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/exerciseChart" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

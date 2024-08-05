@@ -296,13 +296,13 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun getExerciseStats(id: Int): Map<LocalDate, Double> {
+    fun getExerciseStats(id: Int, dateCutoff: String): Map<LocalDate, Double> {
         val result = TreeMap<LocalDate, Double>()
         val cursor = readableDatabase.rawQuery("Select date, $loadFormula" +
                 "from Workout W join Exercise E on W.id = E.WorkoutID join ExerciseSet S on S.exerciseID = E.id " +
-                "where exerciseType = ? " +
+                "where exerciseType = ? and date > ? " +
                 "group by date " +
-                "order by date ASC", arrayOf(id.toString()))
+                "order by date ASC", arrayOf(id.toString(), dateCutoff))
 
         while(cursor.moveToNext())
             result[LocalDate.parse(cursor.getString(0), DateTimeFormatter.ofPattern("yyyy.MM.dd"))] = cursor.getDouble(1)

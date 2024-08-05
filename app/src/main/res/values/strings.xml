@@ -29,5 +29,14 @@
     <string name="title_activity_workout">workoutActivity</string>
     <string name="stats">Stats</string>
 
+    <string-array name="stats_period">
+        <item>last month</item>
+        <item>last 3 months</item>
+        <item>last 6 months</item>
+        <item>last year</item>
+        <item>all time</item>
+    </string-array>
+    <string name="no_data">No data for the selected time period</string>
+
     <string name="open">Open</string>
 </resources>
