@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.gym_tracker_app_2.HomeScreen
 import com.example.gym_tracker_app_2.R
+import com.example.gym_tracker_app_2.StatsScreen
 import com.example.gym_tracker_app_2.WorkoutScreen
 
 class ExerciseListDisplayAdapter(private val exercises: ArrayList<String>, private val context: Context)
@@ -29,8 +30,8 @@ class ExerciseListDisplayAdapter(private val exercises: ArrayList<String>, priva
 
     class openExerciseStats(val id: Int, val context: Context) : View.OnClickListener {
         override fun onClick(button: View) {
-            val intent = Intent(context, WorkoutScreen::class.java)
-            intent.putExtra("workoutID", id)
+            val intent = Intent(context, StatsScreen::class.java)
+            intent.putExtra("exerciseTypeID", id)
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(context, intent, null)
         }

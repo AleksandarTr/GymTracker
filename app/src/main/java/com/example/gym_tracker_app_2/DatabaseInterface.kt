@@ -8,6 +8,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.TreeMap
 
 class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     companion object {
@@ -19,6 +20,8 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
     private var exerciseID = -1
     private var setID = -1L
     private val exerciseTypes = ArrayList<String>()
+
+    private val loadFormula = "Sum(S.count * S.weight * S.weight)"
 
     override fun onCreate(db: SQLiteDatabase) {
         val WORKOUT_CREATE =
@@ -244,7 +247,7 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
     }
 
     fun getExercisePR(id: Int) : Int? {
-        val cursor = readableDatabase.rawQuery("Select E.id, Sum(S.count * S.weight * S.weight) as Load " +
+        val cursor = readableDatabase.rawQuery("Select E.id, $loadFormula as Load " +
                 "from Exercise as E join ExerciseSet as S on E.id = S.exerciseID " +
                 "where E.exerciseType = ? " +
                 "group by E.id " +
@@ -287,6 +290,22 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
             set.weight = cursor.getFloat(2)
             result.add(set)
         }
+
+        cursor.close()
+        return result
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getExerciseStats(id: Int): Map<LocalDate, Double> {
+        val result = TreeMap<LocalDate, Double>()
+        val cursor = readableDatabase.rawQuery("Select date, $loadFormula" +
+                "from Workout W join Exercise E on W.id = E.WorkoutID join ExerciseSet S on S.exerciseID = E.id " +
+                "where exerciseType = ? " +
+                "group by date " +
+                "order by date ASC", arrayOf(id.toString()))
+
+        while(cursor.moveToNext())
+            result[LocalDate.parse(cursor.getString(0), DateTimeFormatter.ofPattern("yyyy.MM.dd"))] = cursor.getDouble(1)
 
         cursor.close()
         return result

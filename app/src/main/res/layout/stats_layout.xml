@@ -12,6 +12,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:chartHorizontalScrollingEnabled="true"
-        app:chartZoomEnabled="true"/>
+        app:chartZoomEnabled="true"
+        app:showBottomAxis="true"
+        app:showStartAxis="true"
+        app:layers="line"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
