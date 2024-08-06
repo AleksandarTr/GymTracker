@@ -36,7 +36,6 @@ class StatsScreen: ComponentActivity() {
 
     inner class PeriodSelectorListener : OnItemSelectedListener {
         @SuppressLint("NotifyDataSetChanged")
-        @RequiresApi(Build.VERSION_CODES.O)
         override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
             val currentDate = when(position) {
                 0 -> LocalDate.now().minusMonths(1)
@@ -89,7 +88,6 @@ class StatsScreen: ComponentActivity() {
 
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         exerciseType = intent.getIntExtra("exerciseTypeID", -1)

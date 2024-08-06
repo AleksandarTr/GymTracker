@@ -106,7 +106,6 @@ class ExerciseDisplayAdapter(private var sets: ArrayList<Set>)
         return sets.size
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ExerciseHolder, position: Int) {
         val set = sets[position]
         holder.setCount.setText(set.count.toString())

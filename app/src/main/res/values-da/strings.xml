@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Sporingsapp til fitnesscenter 2</string>
+    <string name="title_activity_home_screen">Startskærm</string>
+    <string name="new_workout">Ny træning</string>
+    <string name="workout_history">Forrige træninger</string>
+
+    <string name="exercise_name">Øvelses navn</string>
+    <string name="add_set">Tilføj et sæt</string>
+    <string name="remove_set">Fjern et sæt</string>
+
+    <string name="date">Dato</string>
+    <string name="workout_name">Trænings navn</string>
+    <string name="workout_saved">Træningen blev gemt med succes.</string>
+    <string name="add_exercise">Tilføj en øvelse</string>
+    <string name="remove_exercise">Fjern en øvelse</string>
+    <string name="save">Gem</string>
+    <string name="tab_description">Vælg, hvilken øvelse du vil redigere</string>
+    <string name="exercise_display_description">Hver övelses detajler vises her</string>
+
+    <string name="set_count">Tælle</string>
+    <string name="set_weight">Vægt</string>
+    <string-array name="set_unit">
+        <item>kg</item>
+        <item>lbs</item>
+    </string-array>
+    <string name="set_count_hint">Antal gentagelser i dette sæt</string>
+    <string name="set_weight_hint">Indast den vægt, der blev brugt i dette sæt</string>
+
+    <string name="title_activity_workout">Trængins aktivitet</string>
+    <string name="stats">Statistik</string>
+
+    <string-array name="stats_period">
+        <item>Sidste måned</item>
+        <item>Sidste 3 måneder</item>
+        <item>Sidste 6 måneder</item>
+        <item>Sidste år</item>
+        <item>Hele tid</item>
+    </string-array>
+    <string name="no_data">Der er ingen data for den valgte tidsperiode</string>
+
+    <string name="open">Åben</string>
+</resources>

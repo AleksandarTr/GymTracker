@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Aplikacija za praćenje teretane 2</string>
+    <string name="title_activity_home_screen">Početna stranica</string>
+    <string name="new_workout">Novi trening</string>
+    <string name="workout_history">Prethodni treninzi</string>
+
+    <string name="exercise_name">Ime vežbe</string>
+    <string name="add_set">Dodaj seriju</string>
+    <string name="remove_set">Ukloni seriju</string>
+
+    <string name="date">Datum</string>
+    <string name="workout_name">Naziv treninga</string>
+    <string name="workout_saved">Trening je uspešno sačuvan.</string>
+    <string name="add_exercise">Dodaj vežbu</string>
+    <string name="remove_exercise">Ukloni vežbu</string>
+    <string name="save">Sačuvaj</string>
+    <string name="tab_description">Izaberite koju vežbu bi hteli da obradite</string>
+    <string name="exercise_display_description">Detalji svake vežbe se prikazuju ovde</string>
+
+    <string name="set_count">Broj</string>
+    <string name="set_weight">Težina</string>
+    <string-array name="set_unit">
+        <item>kg</item>
+        <item>lbs</item>
+    </string-array>
+    <string name="set_count_hint">Broj ponavljana urađenih u ovoj seriji</string>
+    <string name="set_weight_hint">Unesite težinu korišćenu tokom ove serije</string>
+
+    <string name="title_activity_workout">Aktivnost treninga</string>
+    <string name="stats">Statistika</string>
+
+    <string-array name="stats_period">
+        <item>prethodni mesec</item>
+        <item>prethodna 3 meseca</item>
+        <item>prethodnih 6 meseci</item>
+        <item>prethodna godina</item>
+        <item>sve vreme</item>
+    </string-array>
+    <string name="no_data">Nema podataka za izabrani period</string>
+
+    <string name="open">Otvori</string>
+</resources>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Fitnessstudio-Trackerapplikation 2</string>
+    <string name="title_activity_home_screen">Startseite</string>
+    <string name="new_workout">Neues Training</string>
+    <string name="workout_history">Vorherige Traingings</string>
+
+    <string name="exercise_name">Übungsname</string>
+    <string name="add_set">Füg ein Set hinzu</string>
+    <string name="remove_set">Entfern ein Set</string>
+
+    <string name="date">Datum</string>
+    <string name="workout_name">Trainingsname</string>
+    <string name="workout_saved">Das Trainging wurde erfolgreich gespeichert.</string>
+    <string name="add_exercise">Füg eine Übung hinzu</string>
+    <string name="remove_exercise">Entfern eine Übung</string>
+    <string name="save">Speicher</string>
+    <string name="tab_description">Wähl, welche Übung du bearbeiten möchtest</string>
+    <string name="exercise_display_description">Details jeder Übung werden hier gezeigt</string>
+
+    <string name="set_count">Anzahl</string>
+    <string name="set_weight">Gewicht</string>
+    <string-array name="set_unit">
+        <item>kg</item>
+        <item>lbs</item>
+    </string-array>
+    <string name="set_count_hint">Anzahl Wiederholungen, die in diesem Set gemacht wurden</string>
+    <string name="set_weight_hint">Füg das Gewicht ein, das bei diesem Set benutzt wurde</string>
+
+    <string name="title_activity_workout">Traingingsaktivitet</string>
+    <string name="stats">Statistik</string>
+
+    <string-array name="stats_period">
+        <item>letzten Monat</item>
+        <item>letzten 3 Monate</item>
+        <item>letzten 6 Monate</item>
+        <item>letztes Jahr</item>
+        <item>Alle Zeit</item>
+    </string-array>
+    <string name="no_data">Es gibt keine Daten fÜr die gewählte Zeitspanne</string>
+
+    <string name="open">Öffne</string>
+</resources>

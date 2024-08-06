@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.gym_tracker_app_2.ui.main.HistoryDisplayAdapter
 
 class HistoryScreen : ComponentActivity() {
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.history_layout)

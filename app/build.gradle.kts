@@ -9,8 +9,8 @@ android {
 
     defaultConfig {
         applicationId = "com.example.gym_tracker_app_2"
-        minSdk = 24
-        targetSdk = 34
+        minSdk = 26
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -47,6 +47,9 @@ android {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
+    }
+    androidResources {
+        generateLocaleConfig = true
     }
 }
 

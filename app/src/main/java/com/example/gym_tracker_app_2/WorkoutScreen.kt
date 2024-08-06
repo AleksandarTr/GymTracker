@@ -20,7 +20,6 @@ class WorkoutScreen : AppCompatActivity() {
     private lateinit var binding: WorkoutLayoutBinding
     private lateinit var sectionsPagerAdapter: WorkoutDisplayAdapter
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -56,7 +55,6 @@ class WorkoutScreen : AppCompatActivity() {
         else dateField.setText(workout.date.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")))
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun saveWorkout(view: View) {
         val db = HomeScreen.databaseInterface.writableDatabase
         db.beginTransaction()

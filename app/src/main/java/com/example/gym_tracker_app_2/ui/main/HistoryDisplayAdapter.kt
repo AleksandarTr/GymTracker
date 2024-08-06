@@ -44,7 +44,6 @@ class HistoryDisplayAdapter(private val workouts: ArrayList<Workout>, private va
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.name.text = workouts[position].name
         holder.date.text = workouts[position].date.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))

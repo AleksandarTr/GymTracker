@@ -150,7 +150,6 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
         return ++setID
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun updateWorkout(id: Int, name: String, date: LocalDate) {
         val values = ContentValues()
         values.put("name", name)
@@ -219,7 +218,6 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
         return exerciseTypes
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun getWorkouts(): ArrayList<Workout> {
         val result = ArrayList<Workout>()
 
@@ -232,7 +230,6 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
         return result
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun getWorkout(id: Int): Workout? {
         val cursor = readableDatabase.rawQuery("Select name, date from Workout where id = ?", arrayOf(id.toString()))
         if(cursor.count == 0) {
@@ -295,7 +292,6 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
         return result
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun getExerciseStats(id: Int, dateCutoff: String): Map<LocalDate, Double> {
         val result = TreeMap<LocalDate, Double>()
         val cursor = readableDatabase.rawQuery("Select date, $loadFormula" +
@@ -311,7 +307,6 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
         return result
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun getExerciseWorkouts(id: Int, dateCutoff: String): ArrayList<Workout> {
         val result = ArrayList<Workout>()
         val cursor = readableDatabase.rawQuery("Select distinct(W.id), W.name, date " +
