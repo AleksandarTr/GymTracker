@@ -42,4 +42,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/exerciseChart" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/workoutList"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/missingData" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

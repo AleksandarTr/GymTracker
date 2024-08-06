@@ -310,4 +310,20 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
         cursor.close()
         return result
     }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getExerciseWorkouts(id: Int, dateCutoff: String): ArrayList<Workout> {
+        val result = ArrayList<Workout>()
+        val cursor = readableDatabase.rawQuery("Select distinct(W.id), W.name, date " +
+                "from Workout W join Exercise E on W.id = WorkoutID " +
+                "where exerciseType = ? and date > ? " +
+                "order by date DESC", arrayOf(id.toString(), dateCutoff))
+
+        while(cursor.moveToNext())
+            result.add(Workout(cursor.getInt(0), cursor.getString(1),
+                LocalDate.parse(cursor.getString(2), DateTimeFormatter.ofPattern("yyyy.MM.dd"))))
+        cursor.close()
+
+        return result
+    }
 }
