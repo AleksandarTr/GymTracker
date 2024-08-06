@@ -11,7 +11,6 @@ import android.widget.TextView
 import androidx.activity.ComponentActivity
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.gym_tracker_app_2.ui.main.HistoryDisplayAdapter
@@ -23,11 +22,9 @@ import com.patrykandpatrick.vico.core.cartesian.marker.DefaultCartesianMarker
 import com.patrykandpatrick.vico.core.common.component.TextComponent
 import com.patrykandpatrick.vico.core.common.data.ExtraStore
 import com.patrykandpatrick.vico.views.cartesian.CartesianChartView
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import kotlin.properties.Delegates
 
 class StatsScreen: ComponentActivity() {
     private var exerciseType = 0

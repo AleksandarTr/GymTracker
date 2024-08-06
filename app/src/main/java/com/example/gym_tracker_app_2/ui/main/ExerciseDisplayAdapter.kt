@@ -1,5 +1,6 @@
 package com.example.gym_tracker_app_2.ui.main
 
+import android.annotation.SuppressLint
 import android.os.Build
 import android.text.Editable
 import android.text.TextWatcher
@@ -46,6 +47,7 @@ class ExerciseDisplayAdapter(private var sets: ArrayList<Set>)
 
         override fun afterTextChanged(text: Editable?) {}
 
+        @SuppressLint("SetTextI18n")
         override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {
             if (text.isNullOrEmpty() || text.toString()
                     .toFloatOrNull() == null

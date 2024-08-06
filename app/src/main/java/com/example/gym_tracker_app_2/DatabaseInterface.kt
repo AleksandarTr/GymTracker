@@ -163,7 +163,7 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
 
     fun getExerciseTypeID(name: String, addExercise: Boolean): Int? {
         var result = -1
-        val cursor = readableDatabase.rawQuery("Select id from ExerciseType where name = ?", arrayOf(name))
+        val cursor = readableDatabase.rawQuery("Select id from ExerciseType where upper(name) = ?", arrayOf(name.uppercase()))
         if(cursor.count > 0) {
             cursor.moveToFirst()
             result = cursor.getInt(0)
