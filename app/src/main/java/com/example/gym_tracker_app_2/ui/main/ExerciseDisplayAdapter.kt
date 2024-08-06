@@ -1,6 +1,5 @@
 package com.example.gym_tracker_app_2.ui.main
 
-import android.content.Context
 import android.os.Build
 import android.text.Editable
 import android.text.TextWatcher
@@ -8,27 +7,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
-import android.widget.BaseAdapter
 import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.recyclerview.widget.RecyclerView
 import com.example.gym_tracker_app_2.HomeScreen
 import com.example.gym_tracker_app_2.R
 import com.example.gym_tracker_app_2.Set
 import java.time.format.DateTimeFormatter
 
-class ExerciseDisplayAdapter(private val context: Context, private var sets: ArrayList<Set>) : BaseAdapter() {
-    override fun getCount(): Int {
-        return sets.size
-    }
-
-    override fun getItem(index: Int): Set {
-        return sets[index]
-    }
-
-    override fun getItemId(index: Int): Long {
-        return sets[index].id
+class ExerciseDisplayAdapter(private var sets: ArrayList<Set>)
+    : RecyclerView.Adapter<ExerciseDisplayAdapter.ExerciseHolder>() {
+    class ExerciseHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val setCount = view.findViewById<EditText>(R.id.setCount)
+        val setWeight = view.findViewById<EditText>(R.id.setWeight)
+        val setUnit = view.findViewById<Spinner>(R.id.setUnit)
+        val setTimeStamp = view.findViewById<TextView>(R.id.setTimeStamp)
     }
 
     private class CountChangeListener(val set: Set, val setCount : EditText) : TextWatcher {
@@ -88,36 +83,38 @@ class ExerciseDisplayAdapter(private val context: Context, private var sets: Arr
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    override fun getView(index: Int, convertView: View?, parent: ViewGroup?): View {
-        val view = LayoutInflater.from(context).inflate(R.layout.set_layout, parent, false)
-
-        val setCount = view!!.findViewById<EditText>(R.id.setCount)
-        val setWeight = view.findViewById<EditText>(R.id.setWeight)
-        val setUnit = view.findViewById<Spinner>(R.id.setUnit)
-        val setTimeStamp = view.findViewById<TextView>(R.id.setTimeStamp)
-        val set = getItem(index)
-
-        setCount.setText(set.count.toString())
-        if (set.weight % 1f == 0f) setWeight.setText(set.weight.toInt().toString())
-        else setWeight.setText(set.weight.toString())
-        setUnit.setSelection(set.unit.toInt())
-        setTimeStamp.text = set.timeStamp.format(DateTimeFormatter.ofPattern("HH:mm"))
-
-        setCount.addTextChangedListener(CountChangeListener(set, setCount))
-        setWeight.addTextChangedListener(WeightChangeListener(set, setWeight))
-        setUnit.onItemSelectedListener = UnitChangeListener(set, setUnit)
-
-        return view
-    }
-
     fun addSet() {
         sets.add(Set(HomeScreen.databaseInterface.getNextSetID()))
-        notifyDataSetChanged()
+        notifyItemInserted(sets.size - 1)
     }
 
     fun removeSet() {
         sets.removeLast()
-        notifyDataSetChanged()
+        notifyItemRemoved(sets.size)
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExerciseHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.set_layout, parent, false)
+
+        return ExerciseHolder(view)
+    }
+
+    override fun getItemCount(): Int {
+        return sets.size
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onBindViewHolder(holder: ExerciseHolder, position: Int) {
+        val set = sets[position]
+        holder.setCount.setText(set.count.toString())
+        if (set.weight % 1f == 0f) holder.setWeight.setText(set.weight.toInt().toString())
+        else holder.setWeight.setText(set.weight.toString())
+        holder.setUnit.setSelection(set.unit.toInt())
+        holder.setTimeStamp.text = set.timeStamp.format(DateTimeFormatter.ofPattern("HH:mm"))
+
+        holder.setCount.addTextChangedListener(CountChangeListener(set, holder.setCount))
+        holder.setWeight.addTextChangedListener(WeightChangeListener(set, holder.setWeight))
+        holder.setUnit.onItemSelectedListener = UnitChangeListener(set, holder.setUnit)
     }
 }

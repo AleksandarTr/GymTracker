@@ -9,19 +9,17 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
-import android.widget.EditText
-import android.widget.ListView
 import android.widget.TextView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.example.gym_tracker_app_2.HomeScreen
 import com.example.gym_tracker_app_2.R
 import com.example.gym_tracker_app_2.Set
 import com.example.gym_tracker_app_2.databinding.ExerciseLayoutBinding
 import com.google.android.material.tabs.TabLayout
-import java.math.BigDecimal
-import java.math.RoundingMode
 import kotlin.math.roundToInt
 
 class ExerciseFragment(private val position: Int) : Fragment() {
@@ -33,7 +31,7 @@ class ExerciseFragment(private val position: Int) : Fragment() {
     private lateinit var prDisplay : TextView
     private lateinit var addSetButton : Button
     private lateinit var removeSetButton : Button
-    private lateinit var exerciseSets : ListView
+    private lateinit var exerciseSets : RecyclerView
     private val sets : ArrayList<Set> = ArrayList()
     private var id : Int = HomeScreen.databaseInterface.getNextExerciseID()
 
@@ -105,7 +103,8 @@ class ExerciseFragment(private val position: Int) : Fragment() {
             exerciseNameField.setAdapter(exerciseAdapter)
         }
 
-        exerciseSets.adapter = context?.let { ExerciseDisplayAdapter(it, sets) }
+        exerciseSets.adapter = context?.let { ExerciseDisplayAdapter(sets) }
+        exerciseSets.layoutManager = LinearLayoutManager(context)
 
         addSetButton.setOnClickListener {
             (exerciseSets.adapter as ExerciseDisplayAdapter?)?.addSet()
