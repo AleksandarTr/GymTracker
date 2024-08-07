@@ -1,7 +1,6 @@
 package com.example.gym_tracker_app_2.ui.main
 
 import android.annotation.SuppressLint
-import android.os.Build
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -11,11 +10,11 @@ import android.widget.AdapterView
 import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.example.gym_tracker_app_2.HomeScreen
 import com.example.gym_tracker_app_2.R
 import com.example.gym_tracker_app_2.Set
+import com.example.gym_tracker_app_2.Unit
 import java.time.format.DateTimeFormatter
 
 class ExerciseDisplayAdapter(private var sets: ArrayList<Set>)
@@ -77,7 +76,7 @@ class ExerciseDisplayAdapter(private var sets: ArrayList<Set>)
             index: Int,
             id: Long
         ) {
-            set.unit = index.toByte()
+            set.unit = Unit.positionToUnit[index]!!
         }
 
         override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -111,7 +110,7 @@ class ExerciseDisplayAdapter(private var sets: ArrayList<Set>)
         holder.setCount.setText(set.count.toString())
         if (set.weight % 1f == 0f) holder.setWeight.setText(set.weight.toInt().toString())
         else holder.setWeight.setText(set.weight.toString())
-        holder.setUnit.setSelection(set.unit.toInt())
+        holder.setUnit.setSelection(Unit.unitToPosition[set.unit]!!)
         holder.setTimeStamp.text = set.timeStamp.format(DateTimeFormatter.ofPattern("HH:mm"))
 
         holder.setCount.addTextChangedListener(CountChangeListener(set, holder.setCount))
