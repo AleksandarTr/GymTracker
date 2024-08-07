@@ -2,6 +2,8 @@ package com.example.gym_tracker_app_2
 
 import android.os.Build
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -16,9 +18,17 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 class WorkoutScreen : AppCompatActivity() {
-
     private lateinit var binding: WorkoutLayoutBinding
     private lateinit var sectionsPagerAdapter: WorkoutDisplayAdapter
+
+    inner class ExerciseNameListener : TextWatcher {
+        override fun beforeTextChanged(name: CharSequence?, start: Int, count: Int, after: Int) {}
+        override fun afterTextChanged(name: Editable?) {}
+
+        override fun onTextChanged(name: CharSequence, start: Int, count: Int, after: Int) {
+            binding.saveButton.isEnabled = name.isNotEmpty()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,10 +59,14 @@ class WorkoutScreen : AppCompatActivity() {
 
         val nameField : EditText = binding.nameField
         nameField.setText(workout?.name)
+        nameField.addTextChangedListener(ExerciseNameListener())
 
         val dateField : EditText = binding.dateField
         if(workout == null) dateField.setText(LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")).toString())
         else dateField.setText(workout.date.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")))
+
+        val saveButton = binding.saveButton
+        saveButton.isEnabled = false
     }
 
     fun saveWorkout(view: View) {
