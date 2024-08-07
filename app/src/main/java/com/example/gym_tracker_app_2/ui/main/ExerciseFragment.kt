@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -90,8 +91,8 @@ class ExerciseFragment(private val position: Int) : Fragment() {
 
             override fun afterTextChanged(p0: Editable?) {
                 if(container is ViewPager) {
-                    val coordinatorLayout = container.parent as CoordinatorLayout
-                    val tabLayout = coordinatorLayout.findViewById<TabLayout>(R.id.exerciseTab)
+                    val constraintLayout = container.parent as ConstraintLayout
+                    val tabLayout = constraintLayout.findViewById<TabLayout>(R.id.exerciseTab)
                     tabLayout.getTabAt(position)?.setText(tabTitle)
                 }
             }
