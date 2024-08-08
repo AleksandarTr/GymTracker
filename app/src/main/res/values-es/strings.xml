@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Aplicación de seguimiento del gimnasio 2</string>
+    <string name="title_activity_home_screen">Página principal</string>
+    <string name="new_workout">Nuevo entrenamiento</string>
+    <string name="workout_history">Historial de entrenamiento</string>
+
+    <string name="exercise_name">Nombre del ejercicio</string>
+    <string name="add_set">Añada una serie</string>
+    <string name="remove_set">Elimina una serie</string>
+
+    <string name="date">Fecha</string>
+    <string name="workout_name">Nombre del entrenamiento</string>
+    <string name="workout_saved">El entrenamiento se ha guardado correctamente.</string>
+    <string name="add_exercise">Añada un ejercico</string>
+    <string name="remove_exercise">Elimina un ejercico</string>
+    <string name="save">Guarda</string>
+    <string name="tab_description">Selecciona el ejercico que quieres editar</string>
+    <string name="exercise_display_description">Los detallos de cada ejercicio figuran aquí</string>
+
+    <string name="set_count">Cuenta</string>
+    <string name="set_weight">Peso</string>
+    <string-array name="set_unit">
+        <item>kg</item>
+        <item>lbs</item>
+    </string-array>
+    <string name="set_count_hint">Escriba el número de repeticiones realizadas en esta serie</string>
+    <string name="set_weight_hint">Escriba el peso utilizado durante esta serie</string>
+
+    <string name="title_activity_workout">Actividad de entrenamiento</string>
+    <string name="stats">Estadísticas</string>
+
+    <string-array name="stats_period">
+        <item>last month</item>
+        <item>last 3 months</item>
+        <item>last 6 months</item>
+        <item>last year</item>
+        <item>all time</item>
+    </string-array>
+    <string name="no_data">No hay datos para el periodo de tiempo seleccionado</string>
+
+    <string name="open">Abra</string>
+</resources>
