@@ -1,34 +1,35 @@
 package com.example.gym_tracker_app_2
 
-enum class Unit(val type: Type) {
-    Kg(Type.WEIGHT),
-    Lbs(Type.WEIGHT);
-
-    private var conversionMap: Map<Unit, Float> = mapOf()
+class Unit private constructor(val name: String, val type: String) {
+    private val conversionMap = HashMap<Unit, Float>()
 
     companion object {
-        private val unitToPosition = mapOf(
-            Kg to 0,
-            Lbs to 1
-        )
-        private val positionToUnit = unitToPosition.map {(k, v) -> v to k}.toMap()
+        private val units = ArrayList<Unit>()
+        private val positions : HashMap<Unit, Int>
 
         init {
-            Kg.conversionMap = mapOf(Kg to 1.0f, Lbs to 2.204622f)
-            Lbs.conversionMap = mapOf(Kg to 0.4535923f, Lbs to 1.0f)
+            val db = HomeScreen.databaseInterface.readableDatabase
+            val cursor = db.rawQuery("Select name, type from Unit", null)
+            while (cursor.moveToNext()) units.add(Unit(cursor.getString(0), cursor.getString(1)))
+            cursor.close()
+
+            for(i in 0 until units.size) {
+                val conversionCursor = db.rawQuery("Select unit2, ratio from UnitConversion where unit1 = ?", arrayOf(i.toString()))
+                units[i].conversionMap[units[i]] = 1.0f
+                while(conversionCursor.moveToNext()) units[i].conversionMap[units[conversionCursor.getInt(0)]] = conversionCursor.getFloat(1)
+                conversionCursor.close()
+            }
+
+            positions = units.mapIndexed { i: Int, v: Unit -> v to i}.toMap() as HashMap<Unit, Int>
         }
 
         fun convertUnitToPosition(unit: Unit): Int {
-            return unitToPosition[unit]!!
+            return positions[unit]!!
         }
 
         fun convertPositionToUnit(position: Int): Unit {
-            return positionToUnit[position]!!
+            return units[position]
         }
-    }
-
-    enum class Type {
-        WEIGHT
     }
 
     fun castTo(value: Float, unit: Unit): Float {

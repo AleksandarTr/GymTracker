@@ -28,7 +28,7 @@ class ExerciseFragment(private val position: Int) : Fragment() {
     private val binding get() = _binding!!
     private var name = ""
 
-    private val preferredUnit = Unit.Kg
+    private val preferredUnit = Unit.convertPositionToUnit(0)
     private lateinit var exerciseNameField : AutoCompleteTextView
     private lateinit var prDisplay : TextView
     private lateinit var addSetButton : Button

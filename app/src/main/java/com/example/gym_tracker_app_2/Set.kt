@@ -5,6 +5,6 @@ import java.time.LocalTime
 data class Set(val id: Long) {
     var count: Int = 0
     var weight: Float = 0f
-    var unit: Unit = Unit.Kg
+    var unit: Unit = Unit.convertPositionToUnit(0)
     val timeStamp = LocalTime.now()
 }

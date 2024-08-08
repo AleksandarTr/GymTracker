@@ -4,8 +4,6 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import android.os.Build
-import androidx.annotation.RequiresApi
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.TreeMap
@@ -13,7 +11,7 @@ import java.util.TreeMap
 class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     companion object {
         const val DATABASE_NAME = "workoutDatabase.db"
-        const val DATABASE_VERSION = 2
+        const val DATABASE_VERSION = 3
     }
 
     private var workoutID = -1
@@ -47,16 +45,64 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
                     "count INTEGER NOT NULL," +
                     "weight REAL NOT NULL," +
                     "exerciseID INTEGER NOT NULL REFERENCES Exercise(id)," +
-                    "unit INTEGER NOT NULL)"
+                    "unit INTEGER NOT NULL REFERENCES Unit(id))"
+
+        val UNIT_CREATE =
+            "CREATE TABLE Unit (" +
+                    "id INTEGER PRIMARY KEY," +
+                    "name TEXT NOT NULL," +
+                    "type TEXT NOT NULL)"
+
+        val UNIT_CONVERSION_CREATE =
+            "CREATE TABLE UnitConversion (" +
+                    "unit1 INTEGER NOT NULL References Unit(id)," +
+                    "unit2 INTEGER NOT NULL References Unit(id)," +
+                    "ratio REAL NOT NULL," +
+                    "PRIMARY KEY(unit1, unit2))"
 
         db.execSQL(WORKOUT_CREATE)
         db.execSQL(EXERCISE_TYPE_CREATE)
         db.execSQL(EXERCISE_CREATE)
+        db.execSQL(UNIT_CREATE)
+        db.execSQL(UNIT_CONVERSION_CREATE)
         db.execSQL(SET_CREATE)
+
+        addVer3Units(db)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        if(oldVersion < 2) db.execSQL("Alter table ExerciseSet ADD unit INTEGER NOT NULL Default(0)")
+        if(oldVersion < 2 && newVersion >= 2) db.execSQL("Alter table ExerciseSet ADD unit INTEGER NOT NULL Default(0)")
+        if(oldVersion < 3 && newVersion >= 3) addUnits(db)
+    }
+
+    private fun addVer3Units(db: SQLiteDatabase) {
+        db.execSQL("Insert into Unit Values (0, 'kg', 'weight'), (1, 'lbs', 'weight')")
+        db.execSQL("Insert into UnitConversion VALUES (0, 1, 2.204622), (1, 0, 0.4535923)")
+    }
+
+    private fun addUnits(db: SQLiteDatabase) {
+        db.execSQL("CREATE TABLE Unit (" +
+                "id INTEGER PRIMARY KEY," +
+                "name TEXT NOT NULL," +
+                "type TEXT NOT NULL)")
+        db.execSQL("CREATE TABLE UnitConversion (" +
+                "unit1 INTEGER NOT NULL References Unit(id)," +
+                "unit2 INTEGER NOT NULL References Unit(id)," +
+                "ratio REAL NOT NULL," +
+                "PRIMARY KEY(unit1, unit2))")
+        addVer3Units(db)
+
+        db.execSQL("PRAGMA foreign_keys=off")
+        db.execSQL("ALTER TABLE ExerciseSet RENAME TO ExerciseSet_old")
+        db.execSQL("CREATE TABLE ExerciseSet (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "count INTEGER NOT NULL," +
+                "weight REAL NOT NULL," +
+                "exerciseID INTEGER NOT NULL REFERENCES Exercise(id)," +
+                "unit INTEGER NOT NULL Default(0) REFERENCES Unit(id))")
+        db.execSQL("Insert into ExerciseSet select * from ExerciseSet_old")
+        db.execSQL("Drop table ExerciseSet_old")
+        db.execSQL("PRAGMA foreign_keys=on")
     }
 
     fun getNextWorkoutID() : Int {
