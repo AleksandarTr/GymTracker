@@ -13,7 +13,7 @@ import java.util.TreeMap
 class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     companion object {
         const val DATABASE_NAME = "workoutDatabase.db"
-        const val DATABASE_VERSION = 1
+        const val DATABASE_VERSION = 2
     }
 
     private var workoutID = -1
@@ -46,7 +46,8 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
                     "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                     "count INTEGER NOT NULL," +
                     "weight REAL NOT NULL," +
-                    "exerciseID INTEGER NOT NULL REFERENCES Exercise(id))"
+                    "exerciseID INTEGER NOT NULL REFERENCES Exercise(id)," +
+                    "unit INTEGER NOT NULL)"
 
         db.execSQL(WORKOUT_CREATE)
         db.execSQL(EXERCISE_TYPE_CREATE)
@@ -55,7 +56,7 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        //TODO("Not yet implemented")
+        if(oldVersion < 2) db.execSQL("Alter table ExerciseSet ADD unit INTEGER NOT NULL Default(0)")
     }
 
     fun getNextWorkoutID() : Int {
@@ -196,11 +197,12 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
         }
     }
 
-    fun updateSet(id: Long, count: Int, weight: Float, exerciseID: Int) {
+    fun updateSet(id: Long, count: Int, weight: Float, exerciseID: Int, unit: Unit) {
         val values = ContentValues()
         values.put("count", count)
         values.put("weight", weight)
         values.put("exerciseID", exerciseID)
+        values.put("unit", Unit.convertUnitToPosition(unit))
 
         if(writableDatabase.update("ExerciseSet", values, "id = ?", arrayOf(id.toString())) < 1) {
             values.put("id", id)

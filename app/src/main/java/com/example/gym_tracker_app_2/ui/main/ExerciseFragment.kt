@@ -28,6 +28,7 @@ class ExerciseFragment(private val position: Int) : Fragment() {
     private val binding get() = _binding!!
     private var name = ""
 
+    private val preferredUnit = Unit.Kg
     private lateinit var exerciseNameField : AutoCompleteTextView
     private lateinit var prDisplay : TextView
     private lateinit var addSetButton : Button
@@ -54,7 +55,6 @@ class ExerciseFragment(private val position: Int) : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = ExerciseLayoutBinding.inflate(inflater, container, false)
         val root = binding.root
 
@@ -81,9 +81,9 @@ class ExerciseFragment(private val position: Int) : Fragment() {
                     val lastExercise = HomeScreen.databaseInterface.getExercise(lastExerciseID)
 
                     var prDisplayText = "Last: "
-                    for(set in lastExercise) prDisplayText += "${set.count}x${set.weight} "
+                    for(set in lastExercise) prDisplayText += "${set.count}x${(set.unit.castTo(set.weight, preferredUnit) * 100f).roundToInt() / 100f} "
                     prDisplayText += "\nPR: "
-                    for(set in exercisePR) prDisplayText += "${set.count}x${set.weight} "
+                    for(set in exercisePR) prDisplayText += "${set.count}x${(set.unit.castTo(set.weight, preferredUnit) * 100f).roundToInt() / 100f} "
 
                     prDisplay.text = prDisplayText
                 }
@@ -127,9 +127,6 @@ class ExerciseFragment(private val position: Int) : Fragment() {
 
     fun save(workoutID: Int) {
         HomeScreen.databaseInterface.updateExercise(id, name, workoutID)
-        for(set in sets) {
-            val weight = (set.unit.castTo(set.weight, Unit.Kg) * 100).roundToInt() / 100f
-            HomeScreen.databaseInterface.updateSet(set.id, set.count, weight, id)
-        }
+        for(set in sets) HomeScreen.databaseInterface.updateSet(set.id, set.count, set.weight, id, set.unit)
     }
 }

@@ -7,15 +7,23 @@ enum class Unit(val type: Type) {
     private var conversionMap: Map<Unit, Float> = mapOf()
 
     companion object {
-        val unitToPosition = mapOf(
+        private val unitToPosition = mapOf(
             Kg to 0,
             Lbs to 1
         )
-        val positionToUnit = unitToPosition.map {(k, v) -> v to k}.toMap()
+        private val positionToUnit = unitToPosition.map {(k, v) -> v to k}.toMap()
 
         init {
             Kg.conversionMap = mapOf(Kg to 1.0f, Lbs to 2.204622f)
             Lbs.conversionMap = mapOf(Kg to 0.4535923f, Lbs to 1.0f)
+        }
+
+        fun convertUnitToPosition(unit: Unit): Int {
+            return unitToPosition[unit]!!
+        }
+
+        fun convertPositionToUnit(position: Int): Unit {
+            return positionToUnit[position]!!
         }
     }
 

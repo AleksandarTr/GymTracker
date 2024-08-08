@@ -31,11 +31,11 @@
     <string name="stats">Estadísticas</string>
 
     <string-array name="stats_period">
-        <item>last month</item>
-        <item>last 3 months</item>
-        <item>last 6 months</item>
-        <item>last year</item>
-        <item>all time</item>
+        <item>el mes pasado</item>
+        <item>los 3 meses pasados</item>
+        <item>los 6 meses pasados</item>
+        <item>el año pasado</item>
+        <item>todo el tiempo</item>
     </string-array>
     <string name="no_data">No hay datos para el periodo de tiempo seleccionado</string>
 
