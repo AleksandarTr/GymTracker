@@ -40,4 +40,6 @@
     <string name="no_data">No hay datos para el periodo de tiempo seleccionado</string>
 
     <string name="open">Abra</string>
+    <string name="preferredUnit">Les unidades preferidas</string>
+    <string name="settings">Opciones</string>
 </resources>

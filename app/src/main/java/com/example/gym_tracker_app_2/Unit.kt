@@ -15,7 +15,6 @@ class Unit private constructor(val name: String, val type: String) {
 
             for(i in 0 until units.size) {
                 val conversionCursor = db.rawQuery("Select unit2, ratio from UnitConversion where unit1 = ?", arrayOf(i.toString()))
-                units[i].conversionMap[units[i]] = 1.0f
                 while(conversionCursor.moveToNext()) units[i].conversionMap[units[conversionCursor.getInt(0)]] = conversionCursor.getFloat(1)
                 conversionCursor.close()
             }
@@ -29,6 +28,10 @@ class Unit private constructor(val name: String, val type: String) {
 
         fun convertPositionToUnit(position: Int): Unit {
             return units[position]
+        }
+
+        fun getUnitCount(): Int {
+            return units.size
         }
     }
 

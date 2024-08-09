@@ -40,4 +40,6 @@
     <string name="no_data">Der er ingen data for den valgte tidsperiode</string>
 
     <string name="open">Åben</string>
+    <string name="preferredUnit">Foretrukkene enheder</string>
+    <string name="settings">Indstillinger</string>
 </resources>

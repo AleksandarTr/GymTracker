@@ -36,4 +36,9 @@ class HomeScreen : ComponentActivity() {
         val intent = Intent(applicationContext, ExerciseScreen::class.java)
         startActivity(intent)
     }
+
+    fun openSettings(view: View) {
+        val intent = Intent(applicationContext, SettingsScreen::class.java)
+        startActivity(intent)
+    }
 }

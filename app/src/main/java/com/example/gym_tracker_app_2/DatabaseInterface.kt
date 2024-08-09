@@ -11,7 +11,7 @@ import java.util.TreeMap
 class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     companion object {
         const val DATABASE_NAME = "workoutDatabase.db"
-        const val DATABASE_VERSION = 3
+        const val DATABASE_VERSION = 4
     }
 
     private var workoutID = -1
@@ -19,7 +19,7 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
     private var setID = -1L
     private val exerciseTypes = ArrayList<String>()
 
-    private val loadFormula = "Sum(S.count * S.weight * S.weight)"
+    private val loadFormula = "Sum(S.count * S.weight * (Select ratio from UnitConversion where unit1 = S.unit and unit2 = ?))"
 
     override fun onCreate(db: SQLiteDatabase) {
         val WORKOUT_CREATE =
@@ -68,16 +68,22 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
         db.execSQL(SET_CREATE)
 
         addVer3Units(db)
+        addVer4Units(db)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         if(oldVersion < 2 && newVersion >= 2) db.execSQL("Alter table ExerciseSet ADD unit INTEGER NOT NULL Default(0)")
         if(oldVersion < 3 && newVersion >= 3) addUnits(db)
+        if(oldVersion < 4 && newVersion >= 4) addVer4Units(db)
     }
 
     private fun addVer3Units(db: SQLiteDatabase) {
         db.execSQL("Insert into Unit Values (0, 'kg', 'weight'), (1, 'lbs', 'weight')")
         db.execSQL("Insert into UnitConversion VALUES (0, 1, 2.204622), (1, 0, 0.4535923)")
+    }
+
+    private fun addVer4Units(db: SQLiteDatabase) {
+        db.execSQL("Insert into UnitConversion VALUES (0, 0, 1), (1, 1, 1)")
     }
 
     private fun addUnits(db: SQLiteDatabase) {
@@ -291,12 +297,12 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
         return result
     }
 
-    fun getExercisePR(id: Int) : Int? {
+    fun getExercisePR(id: Int, preferredUnit: Unit) : Int? {
         val cursor = readableDatabase.rawQuery("Select E.id, $loadFormula as Load " +
                 "from Exercise as E join ExerciseSet as S on E.id = S.exerciseID " +
                 "where E.exerciseType = ? " +
                 "group by E.id " +
-                "order by Load Desc", arrayOf(id.toString()))
+                "order by Load Desc", arrayOf(Unit.convertUnitToPosition(preferredUnit).toString(), id.toString()))
         if(cursor.moveToFirst()) {
             val result = cursor.getInt(0)
             cursor.close()
@@ -340,13 +346,13 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
         return result
     }
 
-    fun getExerciseStats(id: Int, dateCutoff: String): Map<LocalDate, Double> {
+    fun getExerciseStats(id: Int, dateCutoff: String, preferredUnit: Unit): Map<LocalDate, Double> {
         val result = TreeMap<LocalDate, Double>()
         val cursor = readableDatabase.rawQuery("Select date, $loadFormula" +
                 "from Workout W join Exercise E on W.id = E.WorkoutID join ExerciseSet S on S.exerciseID = E.id " +
                 "where exerciseType = ? and date > ? " +
                 "group by date " +
-                "order by date ASC", arrayOf(id.toString(), dateCutoff))
+                "order by date ASC", arrayOf(Unit.convertUnitToPosition(preferredUnit).toString(), id.toString(), dateCutoff))
 
         while(cursor.moveToNext())
             result[LocalDate.parse(cursor.getString(0), DateTimeFormatter.ofPattern("yyyy.MM.dd"))] = cursor.getDouble(1)

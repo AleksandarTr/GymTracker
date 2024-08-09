@@ -40,4 +40,6 @@
     <string name="no_data">Il n\'y a pas de données pour la période sélecionnée</string>
 
     <string name="open">Ouvre</string>
+    <string name="preferredUnit">Les unités préférées</string>
+    <string name="settings">Paramètres</string>
 </resources>

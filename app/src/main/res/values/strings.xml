@@ -39,4 +39,6 @@
     <string name="no_data">No data for the selected time period</string>
 
     <string name="open">Open</string>
+    <string name="preferredUnit">Preferred units</string>
+    <string name="settings">Settings</string>
 </resources>

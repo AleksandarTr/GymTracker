@@ -73,7 +73,7 @@ class ExerciseFragment(private val position: Int) : Fragment() {
                 name = newName.toString()
                 val exerciseID = HomeScreen.databaseInterface.getExerciseTypeID(name, false)
                 if(exerciseID != null) {
-                    val exercisePRID = HomeScreen.databaseInterface.getExercisePR(exerciseID)
+                    val exercisePRID = HomeScreen.databaseInterface.getExercisePR(exerciseID, Unit.convertPositionToUnit(0))
                     val lastExerciseID = HomeScreen.databaseInterface.getLastExercise(exerciseID)
                     if(exercisePRID == null || lastExerciseID == null) return
 

@@ -40,4 +40,6 @@
     <string name="no_data">Нема података за изабрани период</string>
 
     <string name="open">Отвори</string>
+    <string name="preferredUnit">Жељене јединице</string>
+    <string name="settings">Подешавања</string>
 </resources>
