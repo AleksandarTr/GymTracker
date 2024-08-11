@@ -38,7 +38,6 @@
         android:id="@+id/setUnit"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:entries="@array/set_unit"
         android:gravity="center_horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/setTimeStamp"

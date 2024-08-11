@@ -20,10 +20,6 @@
 
     <string name="set_count">Број</string>
     <string name="set_weight">Тежина</string>
-    <string-array name="set_unit">
-        <item>кг</item>
-        <item>лбс</item>
-    </string-array>
     <string name="set_count_hint">Број понављања урађених у овој серији</string>
     <string name="set_weight_hint">Унесите тежину коришћену током ове серије</string>
 

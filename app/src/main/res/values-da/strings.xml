@@ -20,10 +20,6 @@
 
     <string name="set_count">Tælle</string>
     <string name="set_weight">Vægt</string>
-    <string-array name="set_unit">
-        <item>kg</item>
-        <item>lbs</item>
-    </string-array>
     <string name="set_count_hint">Antal gentagelser i dette sæt</string>
     <string name="set_weight_hint">Indast den vægt, der blev brugt i dette sæt</string>
 

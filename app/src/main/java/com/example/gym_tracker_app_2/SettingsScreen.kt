@@ -1,7 +1,6 @@
 package com.example.gym_tracker_app_2
 
 import android.os.Bundle
-import android.os.Environment
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Spinner
@@ -16,6 +15,10 @@ class SettingsScreen: ComponentActivity() {
 
     companion object {
         private val preferredUnits: HashMap<String, Unit> = HashMap()
+
+        fun getPreferredUnit(type: String) : Unit {
+            return preferredUnits[type]!!
+        }
 
         init {
             val directory = File(HomeScreen.appDir)

@@ -18,6 +18,7 @@ import androidx.viewpager.widget.ViewPager
 import com.example.gym_tracker_app_2.HomeScreen
 import com.example.gym_tracker_app_2.R
 import com.example.gym_tracker_app_2.Set
+import com.example.gym_tracker_app_2.SettingsScreen
 import com.example.gym_tracker_app_2.Unit
 import com.example.gym_tracker_app_2.databinding.ExerciseLayoutBinding
 import com.google.android.material.tabs.TabLayout
@@ -28,7 +29,6 @@ class ExerciseFragment(private val position: Int) : Fragment() {
     private val binding get() = _binding!!
     private var name = ""
 
-    private val preferredUnit = Unit.getUnit(0)
     private lateinit var exerciseNameField : AutoCompleteTextView
     private lateinit var prDisplay : TextView
     private lateinit var addSetButton : Button
@@ -81,9 +81,11 @@ class ExerciseFragment(private val position: Int) : Fragment() {
                     val lastExercise = HomeScreen.databaseInterface.getExercise(lastExerciseID)
 
                     var prDisplayText = "Last: "
-                    for(set in lastExercise) prDisplayText += "${set.count}x${(set.unit.castTo(set.weight, preferredUnit) * 100f).roundToInt() / 100f} "
+                    for(set in lastExercise) prDisplayText +=
+                        "${set.count}x${(set.unit.castTo(set.weight, SettingsScreen.getPreferredUnit(set.unit.type)) * 100f).roundToInt() / 100f}${SettingsScreen.getPreferredUnit(set.unit.type).name} "
                     prDisplayText += "\nPR: "
-                    for(set in exercisePR) prDisplayText += "${set.count}x${(set.unit.castTo(set.weight, preferredUnit) * 100f).roundToInt() / 100f} "
+                    for(set in exercisePR) prDisplayText +=
+                        "${set.count}x${(set.unit.castTo(set.weight, SettingsScreen.getPreferredUnit(set.unit.type)) * 100f).roundToInt() / 100f}${SettingsScreen.getPreferredUnit(set.unit.type).name} "
 
                     prDisplay.text = prDisplayText
                 }

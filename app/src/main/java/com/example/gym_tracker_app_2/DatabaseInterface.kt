@@ -346,7 +346,14 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
         return result
     }
 
-    fun getExerciseStats(id: Int, dateCutoff: String, preferredUnit: Unit): Map<LocalDate, Double> {
+    fun getExerciseStats(id: Int, dateCutoff: String): Map<LocalDate, Double> {
+        val preferredUnitCursor = readableDatabase.rawQuery("Select type " +
+                "from Unit U join ExerciseSet S on U.id = S.unit join Exercise E on E.id = S.exerciseID " +
+                "where E.exerciseType = ?", arrayOf(id.toString()))
+        preferredUnitCursor.moveToFirst()
+        val preferredUnit = SettingsScreen.getPreferredUnit(preferredUnitCursor.getString(0))
+        preferredUnitCursor.close()
+
         val result = TreeMap<LocalDate, Double>()
         val cursor = readableDatabase.rawQuery("Select date, $loadFormula" +
                 "from Workout W join Exercise E on W.id = E.WorkoutID join ExerciseSet S on S.exerciseID = E.id " +

@@ -20,10 +20,6 @@
 
     <string name="set_count">Compte</string>
     <string name="set_weight">Poids</string>
-    <string-array name="set_unit">
-        <item>kg</item>
-        <item>lbs</item>
-    </string-array>
     <string name="set_count_hint">Entre le nombre de répétitions réalisées dans cette série</string>
     <string name="set_weight_hint">Entre le poids utillisé pendant cette série</string>
 
