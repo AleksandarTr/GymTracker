@@ -28,7 +28,7 @@ class ExerciseFragment(private val position: Int) : Fragment() {
     private val binding get() = _binding!!
     private var name = ""
 
-    private val preferredUnit = Unit.convertPositionToUnit(0)
+    private val preferredUnit = Unit.getUnit(0)
     private lateinit var exerciseNameField : AutoCompleteTextView
     private lateinit var prDisplay : TextView
     private lateinit var addSetButton : Button
@@ -73,7 +73,7 @@ class ExerciseFragment(private val position: Int) : Fragment() {
                 name = newName.toString()
                 val exerciseID = HomeScreen.databaseInterface.getExerciseTypeID(name, false)
                 if(exerciseID != null) {
-                    val exercisePRID = HomeScreen.databaseInterface.getExercisePR(exerciseID, Unit.convertPositionToUnit(0))
+                    val exercisePRID = HomeScreen.databaseInterface.getExercisePR(exerciseID, Unit.getUnit(0))
                     val lastExerciseID = HomeScreen.databaseInterface.getLastExercise(exerciseID)
                     if(exercisePRID == null || lastExerciseID == null) return
 

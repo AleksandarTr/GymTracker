@@ -46,7 +46,7 @@ class StatsScreen: ComponentActivity() {
             val dateFormat = if (position in 0..3) DateTimeFormatter.ofPattern("d MMM")
                 else DateTimeFormatter.ofPattern("d.M.yyyy")
 
-            val exerciseData = HomeScreen.databaseInterface.getExerciseStats(exerciseType, currentDate.format(DateTimeFormatter.ofPattern("yyyy.MM.dd")), Unit.convertPositionToUnit(0))
+            val exerciseData = HomeScreen.databaseInterface.getExerciseStats(exerciseType, currentDate.format(DateTimeFormatter.ofPattern("yyyy.MM.dd")), Unit.getUnit(0))
             if(exerciseData.isEmpty()) {
                 chartView.isVisible = false
                 missingData.isVisible = true

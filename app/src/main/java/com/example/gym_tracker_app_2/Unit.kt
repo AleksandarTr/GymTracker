@@ -22,12 +22,16 @@ class Unit private constructor(val name: String, val type: String) {
             positions = units.mapIndexed { i: Int, v: Unit -> v to i}.toMap() as HashMap<Unit, Int>
         }
 
-        fun convertUnitToPosition(unit: Unit): Int {
+        fun getPosition(unit: Unit): Int {
             return positions[unit]!!
         }
 
-        fun convertPositionToUnit(position: Int): Unit {
+        fun getUnit(position: Int): Unit {
             return units[position]
+        }
+
+        fun getUnit(name: String): Unit {
+            return units.find {unit -> unit.name == name}!!
         }
 
         fun getUnitCount(): Int {

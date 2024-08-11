@@ -76,7 +76,7 @@ class ExerciseDisplayAdapter(private var sets: ArrayList<Set>)
             index: Int,
             id: Long
         ) {
-            set.unit = Unit.convertPositionToUnit(index)
+            set.unit = Unit.getUnit(index)
         }
 
         override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -110,7 +110,7 @@ class ExerciseDisplayAdapter(private var sets: ArrayList<Set>)
         holder.setCount.setText(set.count.toString())
         if (set.weight % 1f == 0f) holder.setWeight.setText(set.weight.toInt().toString())
         else holder.setWeight.setText(set.weight.toString())
-        holder.setUnit.setSelection(Unit.convertUnitToPosition(set.unit))
+        holder.setUnit.setSelection(Unit.getPosition(set.unit))
         holder.setTimeStamp.text = set.timeStamp.format(DateTimeFormatter.ofPattern("HH:mm"))
 
         holder.setCount.addTextChangedListener(CountChangeListener(set, holder.setCount))

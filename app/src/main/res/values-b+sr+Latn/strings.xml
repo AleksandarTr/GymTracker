@@ -42,4 +42,5 @@
     <string name="open">Otvori</string>
     <string name="preferredUnit">Željene jedinice</string>
     <string name="settings">Podešavanja</string>
+    <string name="weight">Težina</string>
 </resources>

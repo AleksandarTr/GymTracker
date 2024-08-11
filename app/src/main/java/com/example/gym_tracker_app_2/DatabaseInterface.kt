@@ -254,7 +254,7 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
         values.put("count", count)
         values.put("weight", weight)
         values.put("exerciseID", exerciseID)
-        values.put("unit", Unit.convertUnitToPosition(unit))
+        values.put("unit", Unit.getPosition(unit))
 
         if(writableDatabase.update("ExerciseSet", values, "id = ?", arrayOf(id.toString())) < 1) {
             values.put("id", id)
@@ -302,7 +302,7 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
                 "from Exercise as E join ExerciseSet as S on E.id = S.exerciseID " +
                 "where E.exerciseType = ? " +
                 "group by E.id " +
-                "order by Load Desc", arrayOf(Unit.convertUnitToPosition(preferredUnit).toString(), id.toString()))
+                "order by Load Desc", arrayOf(Unit.getPosition(preferredUnit).toString(), id.toString()))
         if(cursor.moveToFirst()) {
             val result = cursor.getInt(0)
             cursor.close()
@@ -352,7 +352,7 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
                 "from Workout W join Exercise E on W.id = E.WorkoutID join ExerciseSet S on S.exerciseID = E.id " +
                 "where exerciseType = ? and date > ? " +
                 "group by date " +
-                "order by date ASC", arrayOf(Unit.convertUnitToPosition(preferredUnit).toString(), id.toString(), dateCutoff))
+                "order by date ASC", arrayOf(Unit.getPosition(preferredUnit).toString(), id.toString(), dateCutoff))
 
         while(cursor.moveToNext())
             result[LocalDate.parse(cursor.getString(0), DateTimeFormatter.ofPattern("yyyy.MM.dd"))] = cursor.getDouble(1)

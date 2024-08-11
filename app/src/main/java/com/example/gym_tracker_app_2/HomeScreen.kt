@@ -8,12 +8,14 @@ import androidx.activity.ComponentActivity
 class HomeScreen : ComponentActivity() {
     companion object {
         lateinit var databaseInterface: DatabaseInterface
+        lateinit var appDir: String
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home_screen_layout)
         databaseInterface = DatabaseInterface(applicationContext)
+        appDir = applicationInfo.dataDir
 
 //        databaseInterface.writableDatabase.execSQL("Delete from Workout")
 //        databaseInterface.writableDatabase.execSQL("Delete from Exercise")

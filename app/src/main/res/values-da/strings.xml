@@ -42,4 +42,5 @@
     <string name="open">Åben</string>
     <string name="preferredUnit">Foretrukkene enheder</string>
     <string name="settings">Indstillinger</string>
+    <string name="weight">Vægt</string>
 </resources>
