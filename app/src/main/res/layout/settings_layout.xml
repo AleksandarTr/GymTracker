@@ -6,6 +6,7 @@
     android:layout_height="match_parent">
 
     <TextView
+        style="@style/Base.Theme.GymTrackerApp2"
         android:id="@+id/preferedUnitTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -18,6 +19,7 @@
         tools:visibility="visible" />
 
     <LinearLayout
+        style="@style/Base.Theme.GymTrackerApp2"
         android:id="@+id/preferredUnits"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -28,6 +30,7 @@
         app:layout_constraintTop_toBottomOf="@+id/preferedUnitTitle"/>
 
     <Button
+        style="@style/Base.Theme.GymTrackerApp2"
         android:id="@+id/saveSettingsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

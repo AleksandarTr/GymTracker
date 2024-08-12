@@ -1,20 +1,15 @@
-package com.example.gym_tracker_app_2.ui.main
+package com.example.gym_tracker_app_2
 
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.example.gym_tracker_app_2.R
-import com.example.gym_tracker_app_2.Workout
-import com.example.gym_tracker_app_2.WorkoutScreen
 import java.time.format.DateTimeFormatter
 
 class HistoryDisplayAdapter(private val workouts: ArrayList<Workout>, private val context: Context): RecyclerView.Adapter<HistoryDisplayAdapter.ViewHolder>() {

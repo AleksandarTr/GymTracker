@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="button_color">#45A12A</color>
+
+    <color name="mintGreen">#6EB36E</color>
+    <color name="paleGreen">#FFB2F2B8</color>
+    <color name="springGreen">#00A552</color>
+    <color name="lightOliveGreen">#FFB9D09B</color>
+    <color name="honeydew">#FFF0FFF0</color>
+    <color name="celadonGreen">#8AB18C</color>
+    <color name="lightGreenGray">#FFA8D5A2</color>
+    <color name="offWhiteGreen">#FFE2F0E7</color>
+
+    <color name="limeGreen">#FF9CFF6D</color>
+    <color name="softLimeGreen">#FFC1E4A3</color>
+    <color name="brightLime">#FF8CFF00</color>
+    <color name="paleLime">#FFD0F5B3</color>
+    <color name="limeTint">#FFD8F6B2</color>
+    <color name="lightLime">#FFE2F6D0</color>
+    <color name="darkLimeGreen">#FF2E8B57</color>
+    <color name="charcoalGray">#FF333333</color>
 </resources>

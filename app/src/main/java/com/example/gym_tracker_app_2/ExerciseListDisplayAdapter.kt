@@ -1,4 +1,4 @@
-package com.example.gym_tracker_app_2.ui.main
+package com.example.gym_tracker_app_2
 
 import android.content.Context
 import android.content.Intent
@@ -9,10 +9,6 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.example.gym_tracker_app_2.HomeScreen
-import com.example.gym_tracker_app_2.R
-import com.example.gym_tracker_app_2.StatsScreen
-import com.example.gym_tracker_app_2.WorkoutScreen
 
 class ExerciseListDisplayAdapter(private val exercises: ArrayList<String>, private val context: Context)
     : RecyclerView.Adapter<ExerciseListDisplayAdapter.ViewHolder>() {

@@ -1,4 +1,4 @@
-package com.example.gym_tracker_app_2.ui.main
+package com.example.gym_tracker_app_2
 
 import android.os.Bundle
 import android.text.Editable
@@ -15,11 +15,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
-import com.example.gym_tracker_app_2.HomeScreen
-import com.example.gym_tracker_app_2.R
-import com.example.gym_tracker_app_2.Set
-import com.example.gym_tracker_app_2.SettingsScreen
-import com.example.gym_tracker_app_2.Unit
 import com.example.gym_tracker_app_2.databinding.ExerciseLayoutBinding
 import com.google.android.material.tabs.TabLayout
 import kotlin.math.roundToInt
@@ -118,6 +113,7 @@ class ExerciseFragment(private val position: Int) : Fragment() {
             (exerciseSets.adapter as ExerciseDisplayAdapter?)?.removeSet()
             if(sets.isEmpty()) removeSetButton.isEnabled = false
         }
+        removeSetButton.isEnabled = false
 
         return root
     }

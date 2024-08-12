@@ -5,6 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
+        style="@style/Base.Theme.GymTrackerApp2"
         android:id="@+id/missingData"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -16,6 +17,7 @@
         app:layout_constraintTop_toBottomOf="@+id/periodSelector" />
 
     <com.patrykandpatrick.vico.views.cartesian.CartesianChartView
+        style="@style/Base.Theme.GymTrackerApp2"
         android:id="@+id/exerciseChart"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,6 +33,7 @@
     </com.patrykandpatrick.vico.views.cartesian.CartesianChartView>
 
     <Spinner
+        style="@style/Base.Theme.GymTrackerApp2"
         android:id="@+id/periodSelector"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -42,6 +45,7 @@
         app:layout_constraintTop_toBottomOf="@+id/exerciseChart" />
 
     <androidx.recyclerview.widget.RecyclerView
+        style="@style/Base.Theme.GymTrackerApp2"
         android:id="@+id/workoutList"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

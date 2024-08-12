@@ -1,19 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <style name="Theme.GymTrackerApp2" parent="android:Theme.Material.Light.NoActionBar" />
-    <!-- Base application theme. -->
     <style name="Base.Theme.GymTrackerApp2" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/limeGreen</item>
+        <item name="colorSecondary">@color/limeTint</item>
+        <item name="colorTertiary">@color/brightLime</item>
+        <item name="android:textColor">@color/charcoalGray</item>
     </style>
-
-    <style name="Theme.GymTrackerApp2.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="Theme.GymTrackerApp2.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="Theme.GymTrackerApp2.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

@@ -8,15 +8,17 @@
     tools:context=".WorkoutScreen">
 
     <com.google.android.material.appbar.AppBarLayout
+        style="@style/Base.Theme.GymTrackerApp2"
         android:id="@+id/appBarLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:theme="@style/Theme.GymTrackerApp2.AppBarOverlay"
+        android:theme="@style/Base.Theme.GymTrackerApp2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
+            style="@style/Base.Theme.GymTrackerApp2"
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -28,6 +30,7 @@
             android:textSize="20sp" />
 
         <com.google.android.material.tabs.TabLayout
+            style="@style/Base.Theme.GymTrackerApp2"
             android:id="@+id/exerciseTab"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -36,6 +39,7 @@
 
 
     <androidx.viewpager.widget.ViewPager
+        style="@style/Base.Theme.GymTrackerApp2"
         android:id="@+id/exerciseDisplay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -47,8 +51,8 @@
     </androidx.viewpager.widget.ViewPager>
 
     <LinearLayout
+        style="@style/Base.Theme.GymTrackerApp2"
         android:id="@+id/exerciseControl"
-        style="?android:attr/buttonBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
@@ -59,28 +63,25 @@
 
         <Button
             android:id="@+id/addExercise"
-            style="?android:attr/buttonBarButtonStyle"
+            style="@style/Base.Theme.GymTrackerApp2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/button_color"
-            android:text="@string/add_exercise"
-            android:textColor="@color/white" />
+            android:text="@string/add_exercise" />
 
         <Button
             android:id="@+id/removeExercise"
-            style="?android:attr/buttonBarButtonStyle"
+            style="@style/Base.Theme.GymTrackerApp2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/button_color"
-            android:text="@string/remove_exercise"
-            android:textColor="@color/white" />
+            android:text="@string/remove_exercise"/>
     </LinearLayout>
 
     <EditText
+        style="@style/Base.Theme.GymTrackerApp2"
         android:id="@+id/nameField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -95,11 +96,11 @@
         android:importantForAutofill="no"/>
 
     <EditText
+        style="@style/Base.Theme.GymTrackerApp2"
         android:id="@+id/dateField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        android:backgroundTint="@color/button_color"
         android:ems="10"
         android:hint="@string/date"
         android:importantForAutofill="no"
@@ -110,14 +111,13 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
+        style="@style/Base.Theme.GymTrackerApp2"
         android:id="@+id/saveButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
-        android:backgroundTint="@color/button_color"
         android:onClick="saveWorkout"
         android:text="@string/save"
-        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

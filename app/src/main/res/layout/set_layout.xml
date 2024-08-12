@@ -7,6 +7,7 @@
     android:orientation="horizontal">
 
     <EditText
+        style="@style/Base.Theme.GymTrackerApp2"
         android:id="@+id/setCount"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -21,6 +22,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
+        style="@style/Base.Theme.GymTrackerApp2"
         android:id="@+id/setWeight"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -35,6 +37,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Spinner
+        style="@style/Base.Theme.GymTrackerApp2"
         android:id="@+id/setUnit"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
@@ -45,6 +48,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        style="@style/Base.Theme.GymTrackerApp2"
         android:id="@+id/setTimeStamp"
         android:layout_width="50dp"
         android:layout_height="wrap_content"

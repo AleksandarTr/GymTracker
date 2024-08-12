@@ -6,6 +6,7 @@
     android:layout_height="wrap_content">
 
     <TextView
+        style="@style/Base.Theme.GymTrackerApp2"
         android:id="@+id/exerciseName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -15,6 +16,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
+        style="@style/Base.Theme.GymTrackerApp2"
         android:id="@+id/exerciseButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

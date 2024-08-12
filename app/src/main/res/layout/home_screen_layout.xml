@@ -6,6 +6,7 @@
     android:layout_height="match_parent">
 
     <TextView
+        style="@style/Base.Theme.GymTrackerApp2"
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -28,22 +29,25 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <Button
+            style="@style/Base.Theme.GymTrackerApp2"
             android:id="@+id/newWorkoutButton"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="newWorkoutClick"
             android:text="@string/new_workout"
             android:textAllCaps="false" />
 
         <Button
+            style="@style/Base.Theme.GymTrackerApp2"
             android:id="@+id/workoutHistoryButton"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="workoutHistoryClick"
             android:text="@string/workout_history"
             android:textAllCaps="false" />
 
         <Button
+            style="@style/Base.Theme.GymTrackerApp2"
             android:id="@+id/statsButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -54,6 +58,7 @@
     </LinearLayout>
 
     <Button
+        style="@style/Base.Theme.GymTrackerApp2"
         android:id="@+id/settingsButton"
         android:layout_width="48dp"
         android:layout_height="48dp"

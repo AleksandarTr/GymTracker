@@ -1,4 +1,4 @@
-package com.example.gym_tracker_app_2.ui.main
+package com.example.gym_tracker_app_2
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -13,10 +13,6 @@ import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.gym_tracker_app_2.HomeScreen
-import com.example.gym_tracker_app_2.R
-import com.example.gym_tracker_app_2.Set
-import com.example.gym_tracker_app_2.Unit
 import java.time.format.DateTimeFormatter
 
 class ExerciseDisplayAdapter(private var sets: ArrayList<Set>, private val context: Context)

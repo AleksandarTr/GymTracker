@@ -1,10 +1,8 @@
-package com.example.gym_tracker_app_2.ui.main
+package com.example.gym_tracker_app_2
 
-import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import com.example.gym_tracker_app_2.HomeScreen
 
 class WorkoutDisplayAdapter(fm: FragmentManager, val workoutID: Int) :
     FragmentPagerAdapter(fm) {

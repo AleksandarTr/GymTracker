@@ -5,6 +5,7 @@
     android:layout_height="match_parent">
 
     <androidx.recyclerview.widget.RecyclerView
+        style="@style/Base.Theme.GymTrackerApp2"
         android:id="@+id/workoutContainer"
         android:layout_width="0dp"
         android:layout_height="0dp"

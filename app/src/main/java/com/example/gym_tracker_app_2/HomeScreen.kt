@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.ComponentActivity
+import com.example.gym_tracker_app_2.databinding.HomeScreenLayoutBinding
 
 class HomeScreen : ComponentActivity() {
     companion object {
@@ -13,14 +14,10 @@ class HomeScreen : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.home_screen_layout)
+        val binding = HomeScreenLayoutBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         databaseInterface = DatabaseInterface(applicationContext)
         appDir = applicationInfo.dataDir
-
-//        databaseInterface.writableDatabase.execSQL("Delete from Workout")
-//        databaseInterface.writableDatabase.execSQL("Delete from Exercise")
-//        databaseInterface.writableDatabase.execSQL("Delete from ExerciseType")
-//        databaseInterface.writableDatabase.execSQL("Delete from ExerciseSet")
     }
 
     fun newWorkoutClick(view: View) {

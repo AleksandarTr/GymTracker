@@ -5,20 +5,19 @@
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.main.ExerciseFragment">
+    tools:context=".ExerciseFragment">
 
     <AutoCompleteTextView
+        style="@style/Base.Theme.GymTrackerApp2"
         android:id="@+id/exerciseNameField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:backgroundTint="@color/button_color"
         android:ems="10"
         android:hint="@string/exercise_name"
         android:importantForAutofill="no"
         android:inputType="text"
         android:textColor="@color/white"
-        android:textColorLink="@color/button_color"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,6 +25,7 @@
         />
 
     <TextView
+        style="@style/Base.Theme.GymTrackerApp2"
         android:id="@+id/prDisplay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -35,6 +35,7 @@
         app:layout_constraintTop_toBottomOf="@+id/exerciseNameField" />
 
     <androidx.recyclerview.widget.RecyclerView
+        style="@style/Base.Theme.GymTrackerApp2"
         android:id="@+id/exerciseSets"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -45,7 +46,7 @@
         app:layout_constraintTop_toBottomOf="@+id/prDisplay" />
 
     <LinearLayout
-        style="?android:attr/buttonBarStyle"
+        style="@style/Base.Theme.GymTrackerApp2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -55,25 +56,21 @@
         app:layout_constraintTop_toBottomOf="@+id/exerciseSets">
 
         <Button
+            style="@style/Base.Theme.GymTrackerApp2"
             android:id="@+id/addSetButton"
-            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/button_color"
-            android:text="@string/add_set"
-            android:textColor="@color/white" />
+            android:text="@string/add_set" />
 
         <Button
+            style="@style/Base.Theme.GymTrackerApp2"
             android:id="@+id/removeSetButton"
-            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/button_color"
-            android:text="@string/remove_set"
-            android:textColor="@color/white" />
+            android:text="@string/remove_set" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

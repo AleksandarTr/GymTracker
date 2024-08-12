@@ -10,7 +10,6 @@ import androidx.appcompat.app.AlertDialog
 import com.google.android.material.tabs.TabLayout
 import androidx.viewpager.widget.ViewPager
 import androidx.appcompat.app.AppCompatActivity
-import com.example.gym_tracker_app_2.ui.main.WorkoutDisplayAdapter
 import com.example.gym_tracker_app_2.databinding.WorkoutLayoutBinding
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
