@@ -1,12 +1,14 @@
 package com.example.gym_tracker_app_2.ui.main
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
@@ -17,7 +19,7 @@ import com.example.gym_tracker_app_2.Set
 import com.example.gym_tracker_app_2.Unit
 import java.time.format.DateTimeFormatter
 
-class ExerciseDisplayAdapter(private var sets: ArrayList<Set>)
+class ExerciseDisplayAdapter(private var sets: ArrayList<Set>, private val context: Context)
     : RecyclerView.Adapter<ExerciseDisplayAdapter.ExerciseHolder>() {
     class ExerciseHolder(view: View) : RecyclerView.ViewHolder(view) {
         val setCount = view.findViewById<EditText>(R.id.setCount)
@@ -110,8 +112,13 @@ class ExerciseDisplayAdapter(private var sets: ArrayList<Set>)
         holder.setCount.setText(set.count.toString())
         if (set.weight % 1f == 0f) holder.setWeight.setText(set.weight.toInt().toString())
         else holder.setWeight.setText(set.weight.toString())
-        holder.setUnit.setSelection(Unit.getPosition(set.unit))
         holder.setTimeStamp.text = set.timeStamp.format(DateTimeFormatter.ofPattern("HH:mm"))
+
+        val units = ArrayList<String>()
+        for(i in 0 until Unit.getUnitCount()) units.add(Unit.getUnit(i).name)
+        val unitAdapter = ArrayAdapter(context, android.R.layout.simple_spinner_item, units.toArray())
+        unitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        holder.setUnit.adapter = unitAdapter
 
         holder.setCount.addTextChangedListener(CountChangeListener(set, holder.setCount))
         holder.setWeight.addTextChangedListener(WeightChangeListener(set, holder.setWeight))

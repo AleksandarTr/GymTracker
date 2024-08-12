@@ -101,12 +101,12 @@ class ExerciseFragment(private val position: Int) : Fragment() {
         })
         if(this.context != null) {
             val exerciseAdapter: ArrayAdapter<String> = ArrayAdapter(this.requireContext(),
-                androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
+                android.R.layout.simple_spinner_item,
                 HomeScreen.databaseInterface.getExerciseTypes())
             exerciseNameField.setAdapter(exerciseAdapter)
         }
 
-        exerciseSets.adapter = context?.let { ExerciseDisplayAdapter(sets) }
+        exerciseSets.adapter = context?.let { ExerciseDisplayAdapter(sets, requireContext()) }
         exerciseSets.layoutManager = LinearLayoutManager(context)
 
         addSetButton.setOnClickListener {
