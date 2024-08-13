@@ -108,7 +108,7 @@ class ExerciseDisplayAdapter(private var sets: ArrayList<Set>, private val conte
         holder.setCount.setText(set.count.toString())
         if (set.weight % 1f == 0f) holder.setWeight.setText(set.weight.toInt().toString())
         else holder.setWeight.setText(set.weight.toString())
-        holder.setTimeStamp.text = set.timeStamp.format(DateTimeFormatter.ofPattern("HH:mm"))
+        holder.setTimeStamp.text = set.timeStamp.format(DateTimeFormatter.ofPattern("mm:ss"))
 
         val units = ArrayList<String>()
         for(i in 0 until Unit.getUnitCount()) units.add(Unit.getUnit(i).name)

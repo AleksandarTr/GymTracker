@@ -113,7 +113,7 @@ class ExerciseFragment(private val position: Int) : Fragment() {
             (exerciseSets.adapter as ExerciseDisplayAdapter?)?.removeSet()
             if(sets.isEmpty()) removeSetButton.isEnabled = false
         }
-        removeSetButton.isEnabled = false
+        if(sets.isEmpty()) removeSetButton.isEnabled = false
 
         return root
     }
