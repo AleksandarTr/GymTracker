@@ -17,6 +17,7 @@
     <string name="tab_description">Select which exercise you would like to edit</string>
     <string name="exercise_display_description">Details about each exercise are displayed here</string>
 
+    <string name="warmup">Warm-up</string>
     <string name="set_count">Count</string>
     <string name="set_weight">Weight</string>
     <string name="set_count_hint">Enter the number of repetitions done in this set</string>

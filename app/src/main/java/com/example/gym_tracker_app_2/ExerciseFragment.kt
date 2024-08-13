@@ -125,6 +125,6 @@ class ExerciseFragment(private val position: Int) : Fragment() {
 
     fun save(workoutID: Int) {
         HomeScreen.databaseInterface.updateExercise(id, name, workoutID)
-        for(set in sets) HomeScreen.databaseInterface.updateSet(set.id, set.count, set.weight, id, set.unit)
+        for(set in sets) HomeScreen.databaseInterface.updateSet(set.id, set.count, set.weight, id, set.unit, set.warmup)
     }
 }

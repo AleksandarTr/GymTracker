@@ -6,9 +6,18 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
+    <CheckBox
+        android:id="@+id/setWarmup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/setCount"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <EditText
-        style="@style/Base.Theme.GymTrackerApp2"
         android:id="@+id/setCount"
+        style="@style/Base.Theme.GymTrackerApp2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -18,8 +27,8 @@
         android:inputType="number"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/setWeight"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/setWarmup"/>
 
     <EditText
         style="@style/Base.Theme.GymTrackerApp2"

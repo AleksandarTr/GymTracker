@@ -6,5 +6,6 @@ data class Set(val id: Long) {
     var count: Int = 0
     var weight: Float = 0f
     var unit: Unit = Unit.getUnit(0)
+    var warmup: Boolean = false
     val timeStamp = LocalTime.now()
 }

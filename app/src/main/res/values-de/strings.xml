@@ -18,6 +18,7 @@
     <string name="tab_description">Wähl, welche Übung du bearbeiten möchtest</string>
     <string name="exercise_display_description">Details jeder Übung werden hier gezeigt</string>
 
+    <string name="warmup">Aufwärmung</string>
     <string name="set_count">Anzahl</string>
     <string name="set_weight">Gewicht</string>
     <string name="set_count_hint">Anzahl Wiederholungen, die in diesem Set gemacht wurden</string>

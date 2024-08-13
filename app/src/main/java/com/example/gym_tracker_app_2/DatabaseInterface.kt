@@ -11,7 +11,7 @@ import java.util.TreeMap
 class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     companion object {
         const val DATABASE_NAME = "workoutDatabase.db"
-        const val DATABASE_VERSION = 4
+        const val DATABASE_VERSION = 5
     }
 
     private var workoutID = -1
@@ -45,7 +45,8 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
                     "count INTEGER NOT NULL," +
                     "weight REAL NOT NULL," +
                     "exerciseID INTEGER NOT NULL REFERENCES Exercise(id)," +
-                    "unit INTEGER NOT NULL REFERENCES Unit(id))"
+                    "unit INTEGER NOT NULL REFERENCES Unit(id)," +
+                    "warmup INTEGER NOT NULL)"
 
         val UNIT_CREATE =
             "CREATE TABLE Unit (" +
@@ -72,9 +73,12 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        if(oldVersion < 2 && newVersion >= 2) db.execSQL("Alter table ExerciseSet ADD unit INTEGER NOT NULL Default(0)")
+        if(oldVersion < 2 && newVersion >= 2)
+            db.execSQL("Alter table ExerciseSet ADD unit INTEGER NOT NULL Default(0)")
         if(oldVersion < 3 && newVersion >= 3) addUnits(db)
         if(oldVersion < 4 && newVersion >= 4) addVer4Units(db)
+        if(oldVersion < 5 && newVersion >= 5)
+            db.execSQL("Alter table ExerciseSet ADD warmup INTEGER NOT NULL Default(0)")
     }
 
     private fun addVer3Units(db: SQLiteDatabase) {
@@ -145,12 +149,13 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
 
     fun getExerciseSets(id: Int): ArrayList<Set> {
         val result = ArrayList<Set>()
-        val cursor = readableDatabase.rawQuery("Select id, count, weight from ExerciseSet where exerciseID = ?", arrayOf(id.toString()))
+        val cursor = readableDatabase.rawQuery("Select id, count, weight, warmup from ExerciseSet where exerciseID = ?", arrayOf(id.toString()))
         with(cursor) {
             while(moveToNext()) {
                 val set = Set(getLong(0))
                 set.count = getInt(1)
                 set.weight = getFloat(2)
+                set.warmup = getInt(3) != 0
                 result.add(set)
             }
         }
@@ -249,12 +254,13 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
         }
     }
 
-    fun updateSet(id: Long, count: Int, weight: Float, exerciseID: Int, unit: Unit) {
+    fun updateSet(id: Long, count: Int, weight: Float, exerciseID: Int, unit: Unit, warmup: Boolean) {
         val values = ContentValues()
         values.put("count", count)
         values.put("weight", weight)
         values.put("exerciseID", exerciseID)
         values.put("unit", Unit.getPosition(unit))
+        values.put("warmup", warmup)
 
         if(writableDatabase.update("ExerciseSet", values, "id = ?", arrayOf(id.toString())) < 1) {
             values.put("id", id)
@@ -300,7 +306,7 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
     fun getExercisePR(id: Int, preferredUnit: Unit) : Int? {
         val cursor = readableDatabase.rawQuery("Select E.id, $loadFormula as Load " +
                 "from Exercise as E join ExerciseSet as S on E.id = S.exerciseID " +
-                "where E.exerciseType = ? " +
+                "where E.exerciseType = ? and warmup = 0 " +
                 "group by E.id " +
                 "order by Load Desc", arrayOf(Unit.getPosition(preferredUnit).toString(), id.toString()))
         if(cursor.moveToFirst()) {
@@ -357,7 +363,7 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
         val result = TreeMap<LocalDate, Double>()
         val cursor = readableDatabase.rawQuery("Select date, $loadFormula" +
                 "from Workout W join Exercise E on W.id = E.WorkoutID join ExerciseSet S on S.exerciseID = E.id " +
-                "where exerciseType = ? and date > ? " +
+                "where exerciseType = ? and date > ? and warmup = 0 " +
                 "group by date " +
                 "order by date ASC", arrayOf(Unit.getPosition(preferredUnit).toString(), id.toString(), dateCutoff))
 

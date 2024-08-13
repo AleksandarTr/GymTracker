@@ -25,29 +25,27 @@
         />
 
     <TextView
-        style="@style/Base.Theme.GymTrackerApp2"
         android:id="@+id/prDisplay"
+        style="@style/Base.Theme.GymTrackerApp2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/exerciseNameField" />
 
     <androidx.recyclerview.widget.RecyclerView
-        style="@style/Base.Theme.GymTrackerApp2"
         android:id="@+id/exerciseSets"
+        style="@style/Base.Theme.GymTrackerApp2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/prDisplay" />
+        app:layout_constraintTop_toBottomOf="@+id/warmupText" />
 
-    <LinearLayout
-        style="@style/Base.Theme.GymTrackerApp2"
-        android:layout_width="wrap_content"
+    <LinearLayout android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:orientation="horizontal"
@@ -73,4 +71,15 @@
             android:layout_weight="1"
             android:text="@string/remove_set" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/warmupText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:text="@string/warmup"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/prDisplay" />
 </androidx.constraintlayout.widget.ConstraintLayout>

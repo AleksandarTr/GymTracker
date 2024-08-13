@@ -18,6 +18,7 @@
     <string name="tab_description">Sélectionne l\'exercice que tu veux modifier</string>
     <string name="exercise_display_description">Les details de chaque exercice sont affichés ici</string>
 
+    <string name="warmup">Échauffement</string>
     <string name="set_count">Compte</string>
     <string name="set_weight">Poids</string>
     <string name="set_count_hint">Entre le nombre de répétitions réalisées dans cette série</string>

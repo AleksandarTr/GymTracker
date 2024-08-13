@@ -18,6 +18,7 @@
     <string name="tab_description">Vælg, hvilken øvelse du vil redigere</string>
     <string name="exercise_display_description">Hver övelses detajler vises her</string>
 
+    <string name="warmup">Opvarmning</string>
     <string name="set_count">Tælle</string>
     <string name="set_weight">Vægt</string>
     <string name="set_count_hint">Antal gentagelser i dette sæt</string>

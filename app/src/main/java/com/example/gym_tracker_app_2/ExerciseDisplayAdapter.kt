@@ -9,10 +9,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.CheckBox
+import android.widget.CompoundButton
 import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.button.MaterialButton.OnCheckedChangeListener
 import java.time.format.DateTimeFormatter
 
 class ExerciseDisplayAdapter(private var sets: ArrayList<Set>, private val context: Context)
@@ -22,6 +26,7 @@ class ExerciseDisplayAdapter(private var sets: ArrayList<Set>, private val conte
         val setWeight = view.findViewById<EditText>(R.id.setWeight)
         val setUnit = view.findViewById<Spinner>(R.id.setUnit)
         val setTimeStamp = view.findViewById<TextView>(R.id.setTimeStamp)
+        val setWarmup = view.findViewById<CheckBox>(R.id.setWarmup)
     }
 
     private class CountChangeListener(val set: Set, val setCount : EditText) : TextWatcher {
@@ -109,6 +114,7 @@ class ExerciseDisplayAdapter(private var sets: ArrayList<Set>, private val conte
         if (set.weight % 1f == 0f) holder.setWeight.setText(set.weight.toInt().toString())
         else holder.setWeight.setText(set.weight.toString())
         holder.setTimeStamp.text = set.timeStamp.format(DateTimeFormatter.ofPattern("mm:ss"))
+        holder.setWarmup.isChecked = set.warmup
 
         val units = ArrayList<String>()
         for(i in 0 until Unit.getUnitCount()) units.add(Unit.getUnit(i).name)
@@ -119,5 +125,6 @@ class ExerciseDisplayAdapter(private var sets: ArrayList<Set>, private val conte
         holder.setCount.addTextChangedListener(CountChangeListener(set, holder.setCount))
         holder.setWeight.addTextChangedListener(WeightChangeListener(set, holder.setWeight))
         holder.setUnit.onItemSelectedListener = UnitChangeListener(set, holder.setUnit)
+        holder.setWarmup.setOnCheckedChangeListener { _, isWarmup -> set.warmup = isWarmup}
     }
 }

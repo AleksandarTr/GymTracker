@@ -63,7 +63,7 @@ class WorkoutScreen : AppCompatActivity() {
         else dateField.setText(workout.date.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")))
 
         val saveButton = binding.saveButton
-        saveButton.isEnabled = false
+        if(nameField.text.isEmpty()) saveButton.isEnabled = false
     }
 
     fun saveWorkout(view: View) {

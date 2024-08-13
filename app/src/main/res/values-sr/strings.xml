@@ -18,6 +18,7 @@
     <string name="tab_description">Изаберите коју вежбу би хтели да обрадите</string>
     <string name="exercise_display_description">Детаљи сваке вежбе се приказују овде</string>
 
+    <string name="warmup">Загревање</string>
     <string name="set_count">Број</string>
     <string name="set_weight">Тежина</string>
     <string name="set_count_hint">Број понављања урађених у овој серији</string>
