@@ -24,7 +24,7 @@ class ExerciseListDisplayAdapter(private val exercises: ArrayList<String>, priva
         return ViewHolder(view)
     }
 
-    class openExerciseStats(val id: Int, val context: Context) : View.OnClickListener {
+    private inner class openExerciseStats(val id: Int, val context: Context) : View.OnClickListener {
         override fun onClick(button: View) {
             val intent = Intent(context, StatsScreen::class.java)
             intent.putExtra("exerciseTypeID", id)

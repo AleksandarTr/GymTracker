@@ -10,13 +10,11 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.CheckBox
-import android.widget.CompoundButton
 import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.button.MaterialButton
-import com.google.android.material.button.MaterialButton.OnCheckedChangeListener
 import java.time.format.DateTimeFormatter
 
 class ExerciseDisplayAdapter(private var sets: ArrayList<Set>, private val context: Context)

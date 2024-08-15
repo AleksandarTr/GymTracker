@@ -40,4 +40,5 @@
     <string name="preferredUnit">Жељене јединице</string>
     <string name="settings">Подешавања</string>
     <string name="weight">Тежина</string>
+    <string name="same_name_exercise">Не можеш да поставиш име вежбе на то, јер већ постоји вежба с тим именом.</string>
 </resources>

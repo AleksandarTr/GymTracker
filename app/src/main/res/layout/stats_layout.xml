@@ -2,7 +2,19 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/statsContainer">
+
+    <EditText
+        android:id="@+id/exerciseTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:importantForAutofill="no"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
         style="@style/Base.Theme.GymTrackerApp2"
@@ -17,20 +29,19 @@
         app:layout_constraintTop_toBottomOf="@+id/periodSelector" />
 
     <com.patrykandpatrick.vico.views.cartesian.CartesianChartView
-        style="@style/Base.Theme.GymTrackerApp2"
         android:id="@+id/exerciseChart"
+        style="@style/Base.Theme.GymTrackerApp2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="5dp"
         app:chartHorizontalScrollingEnabled="true"
         app:chartZoomEnabled="true"
+        app:layers="line"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/exerciseTitle"
         app:showBottomAxis="true"
-        app:showStartAxis="true"
-        app:layers="line">
-
-    </com.patrykandpatrick.vico.views.cartesian.CartesianChartView>
+        app:showStartAxis="true" />
 
     <Spinner
         style="@style/Base.Theme.GymTrackerApp2"

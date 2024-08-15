@@ -1,13 +1,23 @@
 package com.example.gym_tracker_app_2
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
+import android.view.MotionEvent
 import android.view.View
+import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
+import android.widget.AdapterView.FOCUSABLE
+import android.widget.AdapterView.FOCUSABLE_AUTO
+import android.widget.AdapterView.NOT_FOCUSABLE
 import android.widget.AdapterView.OnItemSelectedListener
+import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.activity.ComponentActivity
+import androidx.appcompat.app.AlertDialog
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -29,6 +39,8 @@ class StatsScreen: ComponentActivity() {
     private lateinit var missingData: TextView
     private lateinit var periodSelector: Spinner
     private lateinit var workoutList: RecyclerView
+    private lateinit var exerciseTitle: EditText
+    private lateinit var statsContainer: ConstraintLayout
     private val workouts = ArrayList<Workout>()
 
     inner class PeriodSelectorListener : OnItemSelectedListener {
@@ -82,9 +94,18 @@ class StatsScreen: ComponentActivity() {
         override fun onNothingSelected(periodSelector: AdapterView<*>) {
             periodSelector.setSelection(0)
         }
-
     }
 
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        val location = IntArray(2)
+        exerciseTitle.getLocationOnScreen(location)
+        if((location[0] > ev.rawX || ev.rawX > location[0] + exerciseTitle.width ||
+            location[1] > ev.rawY || ev.rawY > location[1] + exerciseTitle.height)
+            && ev.action == MotionEvent.ACTION_DOWN) exerciseTitle.clearFocus()
+        return super.dispatchTouchEvent(ev)
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         exerciseType = intent.getIntExtra("exerciseTypeID", -1)
@@ -94,6 +115,50 @@ class StatsScreen: ComponentActivity() {
         missingData = findViewById(R.id.missingData)
         periodSelector = findViewById(R.id.periodSelector)
         workoutList = findViewById(R.id.workoutList)
+        exerciseTitle = findViewById(R.id.exerciseTitle)
+        statsContainer = findViewById(R.id.statsContainer)
+
+        exerciseTitle.setText(HomeScreen.databaseInterface.getExerciseName(exerciseType))
+        exerciseTitle.isFocusableInTouchMode = false
+        exerciseTitle.isCursorVisible = false
+        exerciseTitle.isClickable = false
+        exerciseTitle.isSelected = false
+
+        val editableBackground = exerciseTitle.background
+        var prevName = exerciseTitle.text.toString()
+        exerciseTitle.setOnLongClickListener {
+            if(!exerciseTitle.hasFocus()) {
+                exerciseTitle.text.toString()
+                exerciseTitle.background = editableBackground
+                exerciseTitle.isFocusableInTouchMode = true
+                exerciseTitle.isCursorVisible = true
+                exerciseTitle.setSelection(exerciseTitle.text.length)
+                exerciseTitle.requestFocus()
+                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.showSoftInput(exerciseTitle, InputMethodManager.SHOW_IMPLICIT)
+            }
+            true
+        }
+        exerciseTitle.setBackgroundResource(android.R.color.transparent)
+
+        exerciseTitle.setOnFocusChangeListener { _, hasFocus ->
+            if(!hasFocus) {
+                exerciseTitle.isFocusableInTouchMode = false
+                exerciseTitle.isCursorVisible = false
+                exerciseTitle.isSelected = false
+                exerciseTitle.setBackgroundResource(android.R.color.transparent)
+                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(exerciseTitle.windowToken, 0)
+
+                if(!HomeScreen.databaseInterface.setExerciseName(exerciseType, exerciseTitle.text.toString())) {
+                    exerciseTitle.setText(prevName)
+                    val dialog = AlertDialog.Builder(this)
+                    dialog.setMessage(R.string.same_name_exercise)
+                    dialog.setPositiveButton("Ok") { _, _ ->}
+                    dialog.create().show()
+                }
+            }
+        }
 
         chartView.chart?.marker = DefaultCartesianMarker(TextComponent(),
             labelPosition = DefaultCartesianMarker.LabelPosition.AbovePoint)

@@ -17,7 +17,6 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
     private var workoutID = -1
     private var exerciseID = -1
     private var setID = -1L
-    private val exerciseTypes = ArrayList<String>()
 
     private val loadFormula = "Sum(S.count * S.weight * (Select ratio from UnitConversion where unit1 = S.unit and unit2 = ?))"
 
@@ -235,7 +234,6 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
         else 0
         idCursor.close()
 
-        exerciseTypes.add(name)
         val values = ContentValues()
         values.put("id", result)
         values.put("name", name)
@@ -269,7 +267,7 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
     }
 
     fun getExerciseTypes(): ArrayList<String> {
-        if(exerciseTypes.isNotEmpty()) return exerciseTypes
+        val exerciseTypes = ArrayList<String>()
 
         val cursor = readableDatabase.rawQuery("Select name from ExerciseType", null)
         while (cursor.moveToNext()) exerciseTypes.add(cursor.getString(0))
@@ -387,5 +385,18 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
         cursor.close()
 
         return result
+    }
+
+    fun setExerciseName(id: Int, name: String): Boolean {
+        val checker = readableDatabase.rawQuery("Select id from ExerciseType where upper(name) = ?", arrayOf(name.uppercase()))
+        if(checker.count != 0) {
+            checker.close()
+            return false
+        }
+        checker.close()
+
+        val values = ContentValues()
+        values.put("name", name)
+        return readableDatabase.update("ExerciseType", values, "id = ?", arrayOf(id.toString())) >= 1
     }
 }

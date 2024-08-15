@@ -40,4 +40,5 @@
     <string name="preferredUnit">Foretrukkene enheder</string>
     <string name="settings">Indstillinger</string>
     <string name="weight">Vægt</string>
+    <string name="same_name_exercise">Du kan ikke indstille øvelsesnavnet til dette, fordi der allerede findes en øvelse med dette navn.</string>
 </resources>
