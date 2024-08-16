@@ -14,6 +14,7 @@ import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import java.time.format.DateTimeFormatter
 
@@ -70,7 +71,9 @@ class ExerciseDisplayAdapter(private var sets: ArrayList<Set>, private val conte
         }
     }
 
-    private class UnitChangeListener(val set: Set, val setUnit: Spinner) : AdapterView.OnItemSelectedListener{
+    private class UnitChangeListener(val set: Set, val setUnit: Spinner, val setCount: EditText, val setWeight: EditText)
+        : AdapterView.OnItemSelectedListener{
+        @SuppressLint("SetTextI18n")
         override fun onItemSelected(
             parent: AdapterView<*>?,
             selected: View?,
@@ -78,6 +81,26 @@ class ExerciseDisplayAdapter(private var sets: ArrayList<Set>, private val conte
             id: Long
         ) {
             set.unit = Unit.getUnit(index)
+            when(set.unit.type) {
+                "weight" -> {
+                    setCount.isVisible = true
+                    setWeight.isVisible = true
+                    setCount.setText("0")
+                    setWeight.setText("0")
+                }
+                "time" -> {
+                    setCount.isVisible = false
+                    setWeight.isVisible = true
+                    setCount.setText("1")
+                    setWeight.setText("0")
+                }
+                "rep" -> {
+                    setCount.isVisible = true
+                    setWeight.isVisible = false
+                    setCount.setText("0")
+                    setWeight.setText("1")
+                }
+            }
         }
 
         override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -122,7 +145,7 @@ class ExerciseDisplayAdapter(private var sets: ArrayList<Set>, private val conte
 
         holder.setCount.addTextChangedListener(CountChangeListener(set, holder.setCount))
         holder.setWeight.addTextChangedListener(WeightChangeListener(set, holder.setWeight))
-        holder.setUnit.onItemSelectedListener = UnitChangeListener(set, holder.setUnit)
+        holder.setUnit.onItemSelectedListener = UnitChangeListener(set, holder.setUnit, holder.setCount, holder.setWeight)
         holder.setWarmup.setOnCheckedChangeListener { _, isWarmup -> set.warmup = isWarmup}
     }
 }
