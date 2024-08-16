@@ -40,5 +40,7 @@
     <string name="settings">Settings</string>
 
     <string name="weight">Weight</string>
+    <string name="time">Time</string>
+    <string name="rep">Repetition</string>
     <string name="same_name_exercise">You cannot set the exercise name to this, because there is already an exercise with this name.</string>
 </resources>

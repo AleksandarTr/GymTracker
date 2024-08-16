@@ -11,7 +11,7 @@ import java.util.TreeMap
 class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     companion object {
         const val DATABASE_NAME = "workoutDatabase.db"
-        const val DATABASE_VERSION = 5
+        const val DATABASE_VERSION = 6
     }
 
     private var workoutID = -1
@@ -69,6 +69,7 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
 
         addVer3Units(db)
         addVer4Units(db)
+        addVer6Units(db)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
@@ -78,6 +79,7 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
         if(oldVersion < 4 && newVersion >= 4) addVer4Units(db)
         if(oldVersion < 5 && newVersion >= 5)
             db.execSQL("Alter table ExerciseSet ADD warmup INTEGER NOT NULL Default(0)")
+        if(oldVersion < 6 && newVersion >= 6) addVer6Units(db)
     }
 
     private fun addVer3Units(db: SQLiteDatabase) {
@@ -87,6 +89,12 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
 
     private fun addVer4Units(db: SQLiteDatabase) {
         db.execSQL("Insert into UnitConversion VALUES (0, 0, 1), (1, 1, 1)")
+    }
+
+    private fun addVer6Units(db: SQLiteDatabase) {
+        db.execSQL("Insert into Unit Values (2, 's', 'time'), (3, 'min', 'time'), (4, 'h', 'time'), (5, 'rep', 'rep')")
+        db.execSQL("Insert into UnitConversion Values (2, 2, 1), (2, 3, 0.016666), (2, 4, 0.0002777)," +
+                "(3, 2, 60), (3, 3, 1), (3, 4, 0.016666), (4, 2, 3600), (4, 3, 60), (4, 4, 1), (5, 5, 1)")
     }
 
     private fun addUnits(db: SQLiteDatabase) {

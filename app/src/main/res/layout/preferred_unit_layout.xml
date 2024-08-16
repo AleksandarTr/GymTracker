@@ -5,23 +5,25 @@
     android:layout_height="wrap_content">
 
     <TextView
-        style="@style/Base.Theme.GymTrackerApp2"
         android:id="@+id/unitType"
+        style="@style/Base.Theme.GymTrackerApp2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="10dp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/SelectedUnit"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Spinner
-        style="@style/Base.Theme.GymTrackerApp2"
         android:id="@+id/SelectedUnit"
+        style="@style/Base.Theme.GymTrackerApp2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/unitType"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

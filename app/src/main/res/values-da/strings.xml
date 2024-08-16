@@ -16,7 +16,7 @@
     <string name="remove_exercise">Fjern en øvelse</string>
     <string name="save">Gem</string>
     <string name="tab_description">Vælg, hvilken øvelse du vil redigere</string>
-    <string name="exercise_display_description">Hver övelses detajler vises her</string>
+    <string name="exercise_display_description">Hver øvelses detajler vises her</string>
 
     <string name="warmup">Opvarmning</string>
     <string name="set_count">Tælle</string>
@@ -40,5 +40,7 @@
     <string name="preferredUnit">Foretrukkene enheder</string>
     <string name="settings">Indstillinger</string>
     <string name="weight">Vægt</string>
+    <string name="time">Tid</string>
+    <string name="rep">Gentagelse</string>
     <string name="same_name_exercise">Du kan ikke indstille øvelsesnavnet til dette, fordi der allerede findes en øvelse med dette navn.</string>
 </resources>

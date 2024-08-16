@@ -40,5 +40,7 @@
     <string name="preferredUnit">Les unidades preferidas</string>
     <string name="settings">Opciones</string>
     <string name="weight">Peso</string>
+    <string name="time">Tiempo</string>
+    <string name="rep">Repeticion</string>
     <string name="same_name_exercise">No puedes poner este nombre del ejercicio porque ya existe un ejercicio con ese nombre.</string>
 </resources>

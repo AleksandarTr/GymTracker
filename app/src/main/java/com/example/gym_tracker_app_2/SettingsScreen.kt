@@ -41,8 +41,13 @@ class SettingsScreen: ComponentActivity() {
                 }
             }
 
-            if(preferredUnits.isEmpty()) {
-                preferredUnits["weight"] = Unit.getUnit("kg")
+            val unitTypes = HashSet<String>()
+            for(i in 0 until Unit.getUnitCount()) unitTypes.add(Unit.getUnit(i).type)
+
+            if(preferredUnits.size != unitTypes.size) {
+                if(!preferredUnits.containsKey("weight")) preferredUnits["weight"] = Unit.getUnit("kg")
+                if(!preferredUnits.containsKey("time")) preferredUnits["time"] = Unit.getUnit("s")
+                if(!preferredUnits.containsKey("rep")) preferredUnits["rep"] = Unit.getUnit("rep")
 
                 if(!settingsFile.exists()) {
                     directory.mkdirs()
@@ -76,6 +81,8 @@ class SettingsScreen: ComponentActivity() {
 
             val localizedType = when(type) {
                 "weight" -> getString(R.string.weight)
+                "time" -> getString(R.string.time)
+                "rep" -> getString(R.string.rep)
                 else -> type
             }
             unitType.text = localizedType
@@ -85,7 +92,7 @@ class SettingsScreen: ComponentActivity() {
             selectedUnit.adapter = arrayAdapter
             selectedUnit.setSelection(units.indexOf(preferredUnits[type]!!.name))
 
-            preferredUnitSpinners.put(type, selectedUnit)
+            preferredUnitSpinners[type] = selectedUnit
             units.clear()
         }
     }
@@ -104,7 +111,8 @@ class SettingsScreen: ComponentActivity() {
             if(type != unit.type) {
                 addUnitType(type, unitRow, units)
                 type = unit.type
-                unitRow = layoutInflater.inflate(R.layout.preferred_unit_layout, binding.preferredUnits)
+                unitRow = layoutInflater.inflate(R.layout.preferred_unit_layout, null)
+                binding.preferredUnits.addView(unitRow)
             }
 
             units.add(unit.name)

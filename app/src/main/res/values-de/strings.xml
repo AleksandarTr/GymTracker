@@ -40,5 +40,7 @@
     <string name="preferredUnit">Bevorzugte Einheiten</string>
     <string name="settings">Einstellungen</string>
     <string name="weight">Gewicht</string>
+    <string name="time">Zeit</string>
+    <string name="rep">Wiederholung</string>
     <string name="same_name_exercise">Du kannst den Übungsnamen nicht so stellen, weil es schon eine Übung mit dem Namen gibt.</string>
 </resources>
