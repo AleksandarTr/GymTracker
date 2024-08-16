@@ -13,12 +13,11 @@ import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import java.time.format.DateTimeFormatter
 
-class ExerciseDisplayAdapter(private var sets: ArrayList<Set>, private val context: Context)
+class ExerciseDisplayAdapter(private var sets: ArrayList<Set>, private val context: Context, private val recyclerView: RecyclerView)
     : RecyclerView.Adapter<ExerciseDisplayAdapter.ExerciseHolder>() {
     class ExerciseHolder(view: View) : RecyclerView.ViewHolder(view) {
         val setCount = view.findViewById<EditText>(R.id.setCount)
@@ -118,6 +117,24 @@ class ExerciseDisplayAdapter(private var sets: ArrayList<Set>, private val conte
         notifyItemRemoved(sets.size)
     }
 
+    private fun getUnits(unitType: String): ArrayList<String> {
+        val units = ArrayList<String>()
+        for(i in 0 until Unit.getUnitCount())
+            if(Unit.getUnit(i).type == unitType || unitType.isEmpty()) units.add(Unit.getUnit(i).name)
+        return units
+    }
+
+    fun updateUnits(unitType: String) {
+        val units = getUnits(unitType)
+
+        for(i in 0 until sets.size) {
+            val holder = recyclerView.findViewHolderForAdapterPosition(i) as ExerciseHolder
+            val unitAdapter = ArrayAdapter(context, android.R.layout.simple_spinner_item, units)
+            unitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            holder.setUnit.adapter = unitAdapter
+        }
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExerciseHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.set_layout, parent, false)
@@ -139,7 +156,7 @@ class ExerciseDisplayAdapter(private var sets: ArrayList<Set>, private val conte
 
         val units = ArrayList<String>()
         for(i in 0 until Unit.getUnitCount()) units.add(Unit.getUnit(i).name)
-        val unitAdapter = ArrayAdapter(context, android.R.layout.simple_spinner_item, units.toArray())
+        val unitAdapter = ArrayAdapter(context, android.R.layout.simple_spinner_item, units)
         unitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         holder.setUnit.adapter = unitAdapter
 

@@ -68,6 +68,9 @@ class ExerciseFragment(private val position: Int) : Fragment() {
                 name = newName.toString()
                 val exerciseID = HomeScreen.databaseInterface.getExerciseTypeID(name, false)
                 if(exerciseID != null) {
+                    val unitType = HomeScreen.databaseInterface.getExerciseUnitType(exerciseID)
+                    (exerciseSets.adapter as ExerciseDisplayAdapter).updateUnits(unitType)
+
                     val exercisePRID = HomeScreen.databaseInterface.getExercisePR(exerciseID, Unit.getUnit(0))
                     val lastExerciseID = HomeScreen.databaseInterface.getLastExercise(exerciseID)
                     if(exercisePRID == null || lastExerciseID == null) return
@@ -84,6 +87,7 @@ class ExerciseFragment(private val position: Int) : Fragment() {
 
                     prDisplay.text = prDisplayText
                 }
+                else (exerciseSets.adapter as ExerciseDisplayAdapter).updateUnits("")
             }
 
             override fun afterTextChanged(p0: Editable?) {
@@ -101,7 +105,7 @@ class ExerciseFragment(private val position: Int) : Fragment() {
             exerciseNameField.setAdapter(exerciseAdapter)
         }
 
-        exerciseSets.adapter = context?.let { ExerciseDisplayAdapter(sets, requireContext()) }
+        exerciseSets.adapter = context?.let { ExerciseDisplayAdapter(sets, requireContext(), exerciseSets) }
         exerciseSets.layoutManager = LinearLayoutManager(context)
 
         addSetButton.setOnClickListener {

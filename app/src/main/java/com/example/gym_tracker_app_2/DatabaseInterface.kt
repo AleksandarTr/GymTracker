@@ -407,4 +407,16 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
         values.put("name", name)
         return readableDatabase.update("ExerciseType", values, "id = ?", arrayOf(id.toString())) >= 1
     }
+
+    fun getExerciseUnitType(id: Int): String {
+        val cursor = readableDatabase.rawQuery("Select type " +
+                "from Unit U join ExerciseSet S on U.id = S.unit join Exercise E on E.id = S.exerciseID " +
+                "where exerciseType = ? " +
+                "order by E.id ASC", arrayOf(id.toString()))
+
+        var result = ""
+        if(cursor.moveToFirst()) result = cursor.getString(0)
+        cursor.close()
+        return result
+    }
 }

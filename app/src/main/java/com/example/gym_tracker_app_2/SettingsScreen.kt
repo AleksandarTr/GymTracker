@@ -1,5 +1,6 @@
 package com.example.gym_tracker_app_2
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
@@ -97,6 +98,7 @@ class SettingsScreen: ComponentActivity() {
         }
     }
 
+    @SuppressLint("InflateParams")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = SettingsLayoutBinding.inflate(layoutInflater)
