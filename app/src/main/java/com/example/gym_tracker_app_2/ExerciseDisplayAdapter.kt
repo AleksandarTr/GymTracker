@@ -81,23 +81,19 @@ class ExerciseDisplayAdapter(private var sets: ArrayList<Set>, private val conte
         ) {
             set.unit = Unit.getUnit(index)
             when(set.unit.type) {
-                "weight" -> {
-                    setCount.isVisible = true
-                    setWeight.isVisible = true
-                    setCount.setText("0")
-                    setWeight.setText("0")
-                }
                 "time" -> {
                     setCount.isVisible = false
                     setWeight.isVisible = true
                     setCount.setText("1")
-                    setWeight.setText("0")
                 }
                 "rep" -> {
                     setCount.isVisible = true
                     setWeight.isVisible = false
-                    setCount.setText("0")
                     setWeight.setText("1")
+                }
+                else -> {
+                    setCount.isVisible = true
+                    setWeight.isVisible = true
                 }
             }
         }
@@ -127,12 +123,15 @@ class ExerciseDisplayAdapter(private var sets: ArrayList<Set>, private val conte
     fun updateUnits(unitType: String) {
         val units = getUnits(unitType)
 
-        for(i in 0 until sets.size) {
-            val holder = recyclerView.findViewHolderForAdapterPosition(i) as ExerciseHolder
-            val unitAdapter = ArrayAdapter(context, android.R.layout.simple_spinner_item, units)
-            unitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            holder.setUnit.adapter = unitAdapter
+        try {
+            for (i in 0 until sets.size) {
+                val holder = recyclerView.findViewHolderForAdapterPosition(i) as ExerciseHolder
+                val unitAdapter = ArrayAdapter(context, android.R.layout.simple_spinner_item, units)
+                unitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                holder.setUnit.adapter = unitAdapter
+            }
         }
+        catch (_: NullPointerException) {}
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExerciseHolder {
@@ -154,8 +153,7 @@ class ExerciseDisplayAdapter(private var sets: ArrayList<Set>, private val conte
         holder.setTimeStamp.text = set.timeStamp.format(DateTimeFormatter.ofPattern("mm:ss"))
         holder.setWarmup.isChecked = set.warmup
 
-        val units = ArrayList<String>()
-        for(i in 0 until Unit.getUnitCount()) units.add(Unit.getUnit(i).name)
+        val units = getUnits(if(sets.size > 0) sets[0].unit.type else "")
         val unitAdapter = ArrayAdapter(context, android.R.layout.simple_spinner_item, units)
         unitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         holder.setUnit.adapter = unitAdapter
