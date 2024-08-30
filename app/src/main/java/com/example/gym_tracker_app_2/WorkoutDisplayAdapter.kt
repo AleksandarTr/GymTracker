@@ -8,6 +8,7 @@ class WorkoutDisplayAdapter(fm: FragmentManager, val workoutID: Int) :
     FragmentPagerAdapter(fm) {
 
     private val exerciseFragments = ArrayList<ExerciseFragment>()
+    private val forDeletion = ArrayList<ExerciseFragment>()
 
     init {
         val exerciseIDs = HomeScreen.databaseInterface.getWorkoutExercises(workoutID)
@@ -37,11 +38,16 @@ class WorkoutDisplayAdapter(fm: FragmentManager, val workoutID: Int) :
     }
 
     fun removeExercise() {
-        exerciseFragments.removeLast()
+        val exercise = exerciseFragments.removeLast()
+        exercise.removeSets()
+        forDeletion.add(exercise)
         notifyDataSetChanged()
     }
 
     fun save() {
         for(exercise in exerciseFragments) exercise.save(workoutID)
+        for(exercise in forDeletion) exercise.save(workoutID)
+        for(exercise in forDeletion) HomeScreen.databaseInterface.deleteExercise(exercise.getExerciseId())
+        forDeletion.clear()
     }
 }

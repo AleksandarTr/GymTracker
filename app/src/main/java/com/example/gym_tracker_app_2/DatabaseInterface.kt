@@ -405,4 +405,16 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
         cursor.close()
         return result
     }
+
+    fun deleteExercise(id: Int) {
+        writableDatabase.delete("Exercise", "id = ?", arrayOf(id.toString()))
+    }
+
+    fun deleteSet(id: Long) {
+        writableDatabase.delete("ExerciseSet", "id = ?", arrayOf(id.toString()))
+    }
+
+    fun deleteWorkout(id: Int) {
+        writableDatabase.delete("Workout", "id = ?", arrayOf(id.toString()))
+    }
 }

@@ -103,12 +103,15 @@ class ExerciseDisplayAdapter(private var sets: ArrayList<Set>, private val conte
         }
     }
 
+    private val forDeletion = ArrayList<Long>()
+
     fun addSet() {
         sets.add(Set(HomeScreen.databaseInterface.getNextSetID()))
         notifyItemInserted(sets.size - 1)
     }
 
     fun removeSet() {
+        forDeletion.add(sets.last().id)
         sets.removeLast()
         notifyItemRemoved(sets.size)
     }
@@ -163,5 +166,10 @@ class ExerciseDisplayAdapter(private var sets: ArrayList<Set>, private val conte
         holder.setWeight.addTextChangedListener(WeightChangeListener(set, holder.setWeight))
         holder.setUnit.onItemSelectedListener = UnitChangeListener(set, holder.setUnit, holder.setCount, holder.setWeight)
         holder.setWarmup.setOnCheckedChangeListener { _, isWarmup -> set.warmup = isWarmup}
+    }
+
+    fun save() {
+        for(set in forDeletion) HomeScreen.databaseInterface.deleteSet(set)
+        forDeletion.clear()
     }
 }

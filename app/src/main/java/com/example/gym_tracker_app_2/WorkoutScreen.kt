@@ -44,7 +44,7 @@ class WorkoutScreen : AppCompatActivity() {
             sectionsPagerAdapter.removeExercise()
             if(sectionsPagerAdapter.count == 0) removeExerciseButton.isEnabled = false
         }
-        removeExerciseButton.isEnabled = false
+        if(sectionsPagerAdapter.count == 0) removeExerciseButton.isEnabled = false
 
         val addExerciseButton : Button = binding.addExercise
         addExerciseButton.setOnClickListener {
@@ -70,8 +70,12 @@ class WorkoutScreen : AppCompatActivity() {
         val db = HomeScreen.databaseInterface.writableDatabase
         db.beginTransaction()
 
-        HomeScreen.databaseInterface.updateWorkout(intent.getIntExtra("workoutID", -1),
-            binding.nameField.text.toString(), LocalDate.parse(binding.dateField.text.toString(), DateTimeFormatter.ofPattern("dd.MM.yyyy")))
+        val workoutId = intent.getIntExtra("workoutID", -1)
+        if(sectionsPagerAdapter.count > 0)
+            HomeScreen.databaseInterface.updateWorkout(workoutId, binding.nameField.text.toString(),
+                LocalDate.parse(binding.dateField.text.toString(),
+                DateTimeFormatter.ofPattern("dd.MM.yyyy")))
+        else HomeScreen.databaseInterface.deleteWorkout(workoutId)
         sectionsPagerAdapter.save()
 
         db.setTransactionSuccessful()

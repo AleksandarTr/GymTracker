@@ -130,5 +130,14 @@ class ExerciseFragment(private val position: Int) : Fragment() {
     fun save(workoutID: Int) {
         HomeScreen.databaseInterface.updateExercise(id, name, workoutID)
         for(set in sets) HomeScreen.databaseInterface.updateSet(set.id, set.count, set.weight, id, set.unit, set.warmup)
+        (exerciseSets.adapter as ExerciseDisplayAdapter).save()
+    }
+
+    fun getExerciseId(): Int {
+        return id
+    }
+
+    fun removeSets() {
+        for (i in 0 until sets.size) (exerciseSets.adapter as ExerciseDisplayAdapter).removeSet()
     }
 }
