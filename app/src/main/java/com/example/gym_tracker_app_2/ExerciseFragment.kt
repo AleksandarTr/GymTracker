@@ -75,8 +75,8 @@ class ExerciseFragment(private val position: Int) : Fragment() {
                     val lastExerciseID = HomeScreen.databaseInterface.getLastExercise(exerciseID)
                     if(exercisePRID == null || lastExerciseID == null) return
 
-                    val exercisePR = HomeScreen.databaseInterface.getExercise(exercisePRID)
-                    val lastExercise = HomeScreen.databaseInterface.getExercise(lastExerciseID)
+                    val exercisePR = HomeScreen.databaseInterface.getExerciseSets(exercisePRID)
+                    val lastExercise = HomeScreen.databaseInterface.getExerciseSets(lastExerciseID)
 
                     var prDisplayText = "Last: "
                     for(set in lastExercise) prDisplayText +=

@@ -157,6 +157,7 @@ class ExerciseDisplayAdapter(private var sets: ArrayList<Set>, private val conte
         val unitAdapter = ArrayAdapter(context, android.R.layout.simple_spinner_item, units)
         unitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         holder.setUnit.adapter = unitAdapter
+        holder.setUnit.setSelection(units.indexOf(set.unit.name))
 
         holder.setCount.addTextChangedListener(CountChangeListener(set, holder.setCount))
         holder.setWeight.addTextChangedListener(WeightChangeListener(set, holder.setWeight))

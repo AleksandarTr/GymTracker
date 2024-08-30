@@ -156,13 +156,17 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
 
     fun getExerciseSets(id: Int): ArrayList<Set> {
         val result = ArrayList<Set>()
-        val cursor = readableDatabase.rawQuery("Select id, count, weight, warmup from ExerciseSet where exerciseID = ?", arrayOf(id.toString()))
+        val cursor = readableDatabase.rawQuery("Select id, count, weight, warmup, unit " +
+                "from ExerciseSet " +
+                "where exerciseID = ? " +
+                "order by id ASC", arrayOf(id.toString()))
         with(cursor) {
             while(moveToNext()) {
                 val set = Set(getLong(0))
                 set.count = getInt(1)
                 set.weight = getFloat(2)
                 set.warmup = getInt(3) != 0
+                set.unit = Unit.getUnit((getInt(4)))
                 result.add(set)
             }
         }
@@ -338,24 +342,6 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
 
         cursor.close()
         return null
-    }
-
-    fun getExercise(id: Int): ArrayList<Set> {
-        val cursor = readableDatabase.rawQuery("Select S.id, count, weight " +
-                "from Exercise as E join ExerciseSet as S on E.id = S.ExerciseID " +
-                "where E.id = ?" +
-                "order by S.id ASC", arrayOf(id.toString()))
-
-        val result = ArrayList<Set>()
-        while(cursor.moveToNext()) {
-            val set = Set(cursor.getLong(0))
-            set.count = cursor.getInt(1)
-            set.weight = cursor.getFloat(2)
-            result.add(set)
-        }
-
-        cursor.close()
-        return result
     }
 
     fun getExerciseStats(id: Int, dateCutoff: String): Map<LocalDate, Double> {
