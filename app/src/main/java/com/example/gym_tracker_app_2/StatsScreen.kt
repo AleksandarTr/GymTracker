@@ -118,7 +118,7 @@ class StatsScreen: ComponentActivity() {
         exerciseTitle = findViewById(R.id.exerciseTitle)
         statsContainer = findViewById(R.id.statsContainer)
 
-        exerciseTitle.setText(HomeScreen.databaseInterface.getExerciseName(exerciseType))
+        exerciseTitle.setText(HomeScreen.databaseInterface.getExerciseTypeName(exerciseType))
         exerciseTitle.isFocusableInTouchMode = false
         exerciseTitle.isCursorVisible = false
         exerciseTitle.isClickable = false

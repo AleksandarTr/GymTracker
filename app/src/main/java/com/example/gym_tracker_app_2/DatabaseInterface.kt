@@ -281,7 +281,7 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
     fun getExerciseTypes(): ArrayList<String> {
         val exerciseTypes = ArrayList<String>()
 
-        val cursor = readableDatabase.rawQuery("Select name from ExerciseType", null)
+        val cursor = readableDatabase.rawQuery("Select name from ExerciseType where name != ''", null)
         while (cursor.moveToNext()) exerciseTypes.add(cursor.getString(0))
         cursor.close()
 
@@ -416,5 +416,15 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
 
     fun deleteWorkout(id: Int) {
         writableDatabase.delete("Workout", "id = ?", arrayOf(id.toString()))
+    }
+
+    fun getExerciseTypeName(id: Int) : String? {
+        val nameCursor = readableDatabase.rawQuery("Select name from ExerciseType where id = ?", arrayOf(id.toString()))
+        if(nameCursor.count == 0) return null
+        nameCursor.moveToFirst()
+        val name = nameCursor.getString(0)
+        nameCursor.close()
+
+        return name
     }
 }
