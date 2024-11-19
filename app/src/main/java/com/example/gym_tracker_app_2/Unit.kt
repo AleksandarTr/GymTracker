@@ -8,7 +8,7 @@ class Unit private constructor(val name: String, val type: String) {
         private val positions : HashMap<Unit, Int>
 
         init {
-            val db = HomeScreen.databaseInterface.readableDatabase
+            val db = DatabaseInterface.instance.readableDatabase
             val cursor = db.rawQuery("Select name, type from Unit", null)
             while (cursor.moveToNext()) units.add(Unit(cursor.getString(0), cursor.getString(1)))
             cursor.close()

@@ -8,7 +8,6 @@ import com.example.gym_tracker_app_2.databinding.HomeScreenLayoutBinding
 
 class HomeScreen : ComponentActivity() {
     companion object {
-        lateinit var databaseInterface: DatabaseInterface
         lateinit var appDir: String
     }
 
@@ -16,13 +15,13 @@ class HomeScreen : ComponentActivity() {
         super.onCreate(savedInstanceState)
         val binding = HomeScreenLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        databaseInterface = DatabaseInterface(applicationContext)
+        DatabaseInterface.setInstance(DatabaseInterface(applicationContext))
         appDir = applicationInfo.dataDir
     }
 
     fun newWorkoutClick(view: View) {
         val intent = Intent(applicationContext, WorkoutScreen::class.java)
-        intent.putExtra("workoutID", databaseInterface.getNextWorkoutID())
+        intent.putExtra("workoutID", DatabaseInterface.instance.getNextWorkoutID())
         startActivity(intent)
     }
 

@@ -5,7 +5,8 @@
     android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".WorkoutScreen">
+    tools:context=".WorkoutScreen"
+    android:fitsSystemWindows="true">
 
     <com.google.android.material.appbar.AppBarLayout
         style="@style/Base.Theme.GymTrackerApp2"

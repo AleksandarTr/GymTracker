@@ -106,7 +106,7 @@ class ExerciseDisplayAdapter(private var sets: ArrayList<Set>, private val conte
     private val forDeletion = ArrayList<Long>()
 
     fun addSet() {
-        sets.add(Set(HomeScreen.databaseInterface.getNextSetID()))
+        sets.add(Set(DatabaseInterface.instance.getNextSetID()))
         notifyItemInserted(sets.size - 1)
     }
 
@@ -129,9 +129,11 @@ class ExerciseDisplayAdapter(private var sets: ArrayList<Set>, private val conte
         try {
             for (i in 0 until sets.size) {
                 val holder = recyclerView.findViewHolderForAdapterPosition(i) as ExerciseHolder
+                val prevSelection = if(holder.setUnit.selectedItem as String? in units) holder.setUnit.selectedItem as String else null
                 val unitAdapter = ArrayAdapter(context, android.R.layout.simple_spinner_item, units)
                 unitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 holder.setUnit.adapter = unitAdapter
+                if(prevSelection != null) holder.setUnit.setSelection(unitAdapter.getPosition(prevSelection))
             }
         }
         catch (_: NullPointerException) {}
@@ -169,7 +171,7 @@ class ExerciseDisplayAdapter(private var sets: ArrayList<Set>, private val conte
     }
 
     fun save() {
-        for(set in forDeletion) HomeScreen.databaseInterface.deleteSet(set)
+        for(set in forDeletion) DatabaseInterface.instance.deleteSet(set)
         forDeletion.clear()
     }
 }

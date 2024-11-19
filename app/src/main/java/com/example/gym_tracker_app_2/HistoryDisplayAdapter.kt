@@ -50,7 +50,7 @@ class HistoryDisplayAdapter(private val workouts: ArrayList<Workout>, private va
 
     fun checkIfWorkoutExists() {
         if(lastOpenedWorkout == -1) return
-        if(HomeScreen.databaseInterface.getWorkout(lastOpenedWorkout) == null) {
+        if(DatabaseInterface.instance.getWorkout(lastOpenedWorkout) == null) {
             val forDeletion = workouts.indexOfFirst { workout -> workout.id == lastOpenedWorkout }
             workouts.removeAt(forDeletion)
             notifyItemRemoved(forDeletion)

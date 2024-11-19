@@ -28,14 +28,14 @@ class ExerciseFragment(private val position: Int) : Fragment() {
     private lateinit var prDisplay : TextView
     private lateinit var addSetButton : Button
     private lateinit var removeSetButton : Button
-    private lateinit var exerciseSets : RecyclerView
+    private var exerciseSets : RecyclerView? = null
     private val sets : ArrayList<Set> = ArrayList()
-    private var id : Int = HomeScreen.databaseInterface.getNextExerciseID()
+    private var id : Int = DatabaseInterface.instance.getNextExerciseID()
 
     constructor(position: Int, id: Int) : this(position) {
         this.id = id
-        this.name = HomeScreen.databaseInterface.getExerciseName(id) ?: return
-        sets.addAll(HomeScreen.databaseInterface.getExerciseSets(id))
+        this.name = DatabaseInterface.instance.getExerciseName(id) ?: return
+        sets.addAll(DatabaseInterface.instance.getExerciseSets(id))
     }
 
     val tabTitle : String
@@ -66,17 +66,17 @@ class ExerciseFragment(private val position: Int) : Fragment() {
 
             override fun onTextChanged(newName: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 name = newName.toString()
-                val exerciseID = HomeScreen.databaseInterface.getExerciseTypeID(name, false)
+                val exerciseID = DatabaseInterface.instance.getExerciseTypeID(name, false)
                 if(exerciseID != null) {
-                    val unitType = HomeScreen.databaseInterface.getExerciseUnitType(exerciseID)
-                    (exerciseSets.adapter as ExerciseDisplayAdapter).updateUnits(unitType)
+                    val unitType = DatabaseInterface.instance.getExerciseUnitType(exerciseID)
+                    (exerciseSets?.adapter as ExerciseDisplayAdapter).updateUnits(unitType)
 
-                    val exercisePRID = HomeScreen.databaseInterface.getExercisePR(exerciseID, Unit.getUnit(0))
-                    val lastExerciseID = HomeScreen.databaseInterface.getLastExercise(exerciseID)
+                    val exercisePRID = DatabaseInterface.instance.getExercisePR(exerciseID, Unit.getUnit(0))
+                    val lastExerciseID = DatabaseInterface.instance.getLastExercise(exerciseID)
                     if(exercisePRID == null || lastExerciseID == null) return
 
-                    val exercisePR = HomeScreen.databaseInterface.getExerciseSets(exercisePRID)
-                    val lastExercise = HomeScreen.databaseInterface.getExerciseSets(lastExerciseID)
+                    val exercisePR = DatabaseInterface.instance.getExerciseSets(exercisePRID)
+                    val lastExercise = DatabaseInterface.instance.getExerciseSets(lastExerciseID)
 
                     var prDisplayText = "Last: "
                     for(set in lastExercise) prDisplayText +=
@@ -87,7 +87,10 @@ class ExerciseFragment(private val position: Int) : Fragment() {
 
                     prDisplay.text = prDisplayText
                 }
-                else (exerciseSets.adapter as ExerciseDisplayAdapter).updateUnits("")
+                else {
+                    (exerciseSets?.adapter as ExerciseDisplayAdapter).updateUnits("")
+                    prDisplay.text = ""
+                }
             }
 
             override fun afterTextChanged(p0: Editable?) {
@@ -101,20 +104,23 @@ class ExerciseFragment(private val position: Int) : Fragment() {
         if(this.context != null) {
             val exerciseAdapter: ArrayAdapter<String> = ArrayAdapter(this.requireContext(),
                 android.R.layout.simple_spinner_item,
-                HomeScreen.databaseInterface.getExerciseTypes())
+                DatabaseInterface.instance.getExerciseTypes())
             exerciseNameField.setAdapter(exerciseAdapter)
         }
 
-        exerciseSets.adapter = context?.let { ExerciseDisplayAdapter(sets, requireContext(), exerciseSets) }
-        exerciseSets.layoutManager = LinearLayoutManager(context)
+        exerciseSets?.adapter = context?.let {
+            if(exerciseSets != null) ExerciseDisplayAdapter(sets, requireContext(), exerciseSets!!)
+            else null
+        }
+        exerciseSets?.layoutManager = LinearLayoutManager(context)
 
         addSetButton.setOnClickListener {
-            (exerciseSets.adapter as ExerciseDisplayAdapter?)?.addSet()
+            (exerciseSets?.adapter as ExerciseDisplayAdapter?)?.addSet()
             removeSetButton.isEnabled = true
         }
 
         removeSetButton.setOnClickListener{
-            (exerciseSets.adapter as ExerciseDisplayAdapter?)?.removeSet()
+            (exerciseSets?.adapter as ExerciseDisplayAdapter?)?.removeSet()
             if(sets.isEmpty()) removeSetButton.isEnabled = false
         }
         if(sets.isEmpty()) removeSetButton.isEnabled = false
@@ -128,9 +134,9 @@ class ExerciseFragment(private val position: Int) : Fragment() {
     }
 
     fun save(workoutID: Int) {
-        HomeScreen.databaseInterface.updateExercise(id, name, workoutID)
-        for(set in sets) HomeScreen.databaseInterface.updateSet(set.id, set.count, set.weight, id, set.unit, set.warmup)
-        (exerciseSets.adapter as ExerciseDisplayAdapter).save()
+        DatabaseInterface.instance.updateExercise(id, name, workoutID)
+        for(set in sets) DatabaseInterface.instance.updateSet(set.id, set.count, set.weight, id, set.unit, set.warmup)
+        (exerciseSets?.adapter as ExerciseDisplayAdapter?)?.save()
     }
 
     fun getExerciseId(): Int {
@@ -138,6 +144,6 @@ class ExerciseFragment(private val position: Int) : Fragment() {
     }
 
     fun removeSets() {
-        for (i in 0 until sets.size) (exerciseSets.adapter as ExerciseDisplayAdapter).removeSet()
+        for (i in 0 until sets.size) (exerciseSets?.adapter as ExerciseDisplayAdapter).removeSet()
     }
 }

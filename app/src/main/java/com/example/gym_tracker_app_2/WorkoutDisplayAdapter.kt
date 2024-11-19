@@ -11,7 +11,7 @@ class WorkoutDisplayAdapter(fm: FragmentManager, val workoutID: Int) :
     private val forDeletion = ArrayList<ExerciseFragment>()
 
     init {
-        val exerciseIDs = HomeScreen.databaseInterface.getWorkoutExercises(workoutID)
+        val exerciseIDs = DatabaseInterface.instance.getWorkoutExercises(workoutID)
         exerciseIDs.sort()
         for(id in exerciseIDs) exerciseFragments.add(ExerciseFragment(exerciseFragments.size, id))
     }
@@ -38,7 +38,7 @@ class WorkoutDisplayAdapter(fm: FragmentManager, val workoutID: Int) :
     }
 
     fun removeExercise() {
-        val exercise = exerciseFragments.removeLast()
+        val exercise = exerciseFragments.removeAt(exerciseFragments.lastIndex)
         exercise.removeSets()
         forDeletion.add(exercise)
         notifyDataSetChanged()
@@ -47,7 +47,7 @@ class WorkoutDisplayAdapter(fm: FragmentManager, val workoutID: Int) :
     fun save() {
         for(exercise in exerciseFragments) exercise.save(workoutID)
         for(exercise in forDeletion) exercise.save(workoutID)
-        for(exercise in forDeletion) HomeScreen.databaseInterface.deleteExercise(exercise.getExerciseId())
+        for(exercise in forDeletion) DatabaseInterface.instance.deleteExercise(exercise.getExerciseId())
         forDeletion.clear()
     }
 }

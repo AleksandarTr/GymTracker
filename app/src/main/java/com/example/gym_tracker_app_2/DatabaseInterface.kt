@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.provider.ContactsContract.Data
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.TreeMap
@@ -12,6 +13,13 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
     companion object {
         const val DATABASE_NAME = "workoutDatabase.db"
         const val DATABASE_VERSION = 6
+        private var _instance: DatabaseInterface? = null
+        val instance: DatabaseInterface
+            get() {return _instance!!}
+
+        fun setInstance(db: DatabaseInterface) {
+            if(_instance == null) _instance = db
+        }
     }
 
     private var workoutID = -1
