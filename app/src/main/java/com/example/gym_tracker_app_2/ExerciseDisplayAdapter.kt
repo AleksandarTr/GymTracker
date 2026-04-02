@@ -79,7 +79,7 @@ class ExerciseDisplayAdapter(private var sets: ArrayList<Set>, private val conte
             index: Int,
             id: Long
         ) {
-            set.unit = Unit.getUnit(index)
+            set.unit = UnitManager.getUnit(index)
             when(set.unit.type) {
                 "time" -> {
                     setCount.isVisible = false
@@ -106,7 +106,7 @@ class ExerciseDisplayAdapter(private var sets: ArrayList<Set>, private val conte
     private val forDeletion = ArrayList<Long>()
 
     fun addSet() {
-        sets.add(Set(DatabaseInterface.instance.getNextSetID()))
+        sets.add(Set(DatabaseInterface.getInstance(context).getNextSetID()))
         notifyItemInserted(sets.size - 1)
     }
 
@@ -117,9 +117,10 @@ class ExerciseDisplayAdapter(private var sets: ArrayList<Set>, private val conte
     }
 
     private fun getUnits(unitType: String): ArrayList<String> {
+        UnitManager.loadUnits(DatabaseInterface.getInstance(context))
         val units = ArrayList<String>()
-        for(i in 0 until Unit.getUnitCount())
-            if(Unit.getUnit(i).type == unitType || unitType.isEmpty()) units.add(Unit.getUnit(i).name)
+        for(i in 0 until UnitManager.getUnitCount())
+            if(UnitManager.getUnit(i).type == unitType || unitType.isEmpty()) units.add(UnitManager.getUnit(i).name)
         return units
     }
 
@@ -171,7 +172,7 @@ class ExerciseDisplayAdapter(private var sets: ArrayList<Set>, private val conte
     }
 
     fun save() {
-        for(set in forDeletion) DatabaseInterface.instance.deleteSet(set)
+        for(set in forDeletion) DatabaseInterface.getInstance(context).deleteSet(set)
         forDeletion.clear()
     }
 }

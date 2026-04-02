@@ -57,7 +57,7 @@ class StatsScreen: ComponentActivity() {
             val dateFormat = if (position in 0..3) DateTimeFormatter.ofPattern("d MMM")
                 else DateTimeFormatter.ofPattern("d.M.yyyy")
 
-            val exerciseData = DatabaseInterface.instance.getExerciseStats(exerciseType, currentDate.format(DateTimeFormatter.ofPattern("yyyy.MM.dd")))
+            val exerciseData = DatabaseInterface.getInstance(applicationContext).getExerciseStats(exerciseType, currentDate.format(DateTimeFormatter.ofPattern("yyyy.MM.dd")))
             if(exerciseData.isEmpty()) {
                 chartView.isVisible = false
                 missingData.isVisible = true
@@ -85,7 +85,7 @@ class StatsScreen: ComponentActivity() {
             }
 
             workouts.clear()
-            workouts.addAll(DatabaseInterface.instance.getExerciseWorkouts(exerciseType,
+            workouts.addAll(DatabaseInterface.getInstance(applicationContext).getExerciseWorkouts(exerciseType,
                 currentDate.format(DateTimeFormatter.ofPattern("yyyy.MM.dd"))))
             workoutList.adapter?.notifyDataSetChanged()
 
@@ -118,7 +118,7 @@ class StatsScreen: ComponentActivity() {
         exerciseTitle = findViewById(R.id.exerciseTitle)
         statsContainer = findViewById(R.id.statsContainer)
 
-        exerciseTitle.setText(DatabaseInterface.instance.getExerciseTypeName(exerciseType))
+        exerciseTitle.setText(DatabaseInterface.getInstance(applicationContext).getExerciseTypeName(exerciseType))
         exerciseTitle.isFocusableInTouchMode = false
         exerciseTitle.isCursorVisible = false
         exerciseTitle.isClickable = false
@@ -150,7 +150,7 @@ class StatsScreen: ComponentActivity() {
                 val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(exerciseTitle.windowToken, 0)
 
-                if(!DatabaseInterface.instance.setExerciseName(exerciseType, exerciseTitle.text.toString())) {
+                if(!DatabaseInterface.getInstance(applicationContext).setExerciseName(exerciseType, exerciseTitle.text.toString())) {
                     exerciseTitle.setText(prevName)
                     val dialog = AlertDialog.Builder(this)
                     dialog.setMessage(R.string.same_name_exercise)

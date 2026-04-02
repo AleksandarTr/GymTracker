@@ -4,7 +4,6 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import android.provider.ContactsContract.Data
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.TreeMap
@@ -13,12 +12,17 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
     companion object {
         const val DATABASE_NAME = "workoutDatabase.db"
         const val DATABASE_VERSION = 6
+        @Volatile
         private var _instance: DatabaseInterface? = null
-        val instance: DatabaseInterface
-            get() {return _instance!!}
 
-        fun setInstance(db: DatabaseInterface) {
-            if(_instance == null) _instance = db
+        fun getInstance(context: Context): DatabaseInterface {
+            return _instance ?: synchronized(this) {
+                _instance ?: DatabaseInterface(context).also { _instance = it }
+            }
+        }
+
+        fun getInstance(): DatabaseInterface? {
+            return _instance
         }
     }
 
@@ -163,6 +167,7 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
     }
 
     fun getExerciseSets(id: Int): ArrayList<Set> {
+        UnitManager.loadUnits(this)
         val result = ArrayList<Set>()
         val cursor = readableDatabase.rawQuery("Select id, count, weight, warmup, unit " +
                 "from ExerciseSet " +
@@ -174,7 +179,7 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
                 set.count = getInt(1)
                 set.weight = getFloat(2)
                 set.warmup = getInt(3) != 0
-                set.unit = Unit.getUnit((getInt(4)))
+                set.unit = UnitManager.getUnit((getInt(4)))
                 result.add(set)
             }
         }
@@ -273,11 +278,12 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
     }
 
     fun updateSet(id: Long, count: Int, weight: Float, exerciseID: Int, unit: Unit, warmup: Boolean) {
+        UnitManager.loadUnits(this)
         val values = ContentValues()
         values.put("count", count)
         values.put("weight", weight)
         values.put("exerciseID", exerciseID)
-        values.put("unit", Unit.getPosition(unit))
+        values.put("unit", UnitManager.getPosition(unit))
         values.put("warmup", warmup)
 
         if(writableDatabase.update("ExerciseSet", values, "id = ?", arrayOf(id.toString())) < 1) {
@@ -322,11 +328,12 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
     }
 
     fun getExercisePR(id: Int, preferredUnit: Unit) : Int? {
+        UnitManager.loadUnits(this)
         val cursor = readableDatabase.rawQuery("Select E.id, $loadFormula as Load " +
                 "from Exercise as E join ExerciseSet as S on E.id = S.exerciseID " +
                 "where E.exerciseType = ? and warmup = 0 " +
                 "group by E.id " +
-                "order by Load Desc", arrayOf(Unit.getPosition(preferredUnit).toString(), id.toString()))
+                "order by Load Desc", arrayOf(UnitManager.getPosition(preferredUnit).toString(), id.toString()))
         if(cursor.moveToFirst()) {
             val result = cursor.getInt(0)
             cursor.close()
@@ -353,11 +360,12 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
     }
 
     fun getExerciseStats(id: Int, dateCutoff: String): Map<LocalDate, Double> {
+        UnitManager.loadUnits(this)
         val preferredUnitCursor = readableDatabase.rawQuery("Select type " +
                 "from Unit U join ExerciseSet S on U.id = S.unit join Exercise E on E.id = S.exerciseID " +
                 "where E.exerciseType = ?", arrayOf(id.toString()))
         preferredUnitCursor.moveToFirst()
-        val preferredUnit = SettingsScreen.getPreferredUnit(preferredUnitCursor.getString(0))
+        val preferredUnit = UnitManager.getPreferredUnit(preferredUnitCursor.getString(0))
         preferredUnitCursor.close()
 
         val result = TreeMap<LocalDate, Double>()
@@ -365,7 +373,7 @@ class DatabaseInterface (context: Context) : SQLiteOpenHelper(context, DATABASE_
                 "from Workout W join Exercise E on W.id = E.WorkoutID join ExerciseSet S on S.exerciseID = E.id " +
                 "where exerciseType = ? and date > ? and warmup = 0 " +
                 "group by date " +
-                "order by date ASC", arrayOf(Unit.getPosition(preferredUnit).toString(), id.toString(), dateCutoff))
+                "order by date ASC", arrayOf(UnitManager.getPosition(preferredUnit).toString(), id.toString(), dateCutoff))
 
         while(cursor.moveToNext())
             result[LocalDate.parse(cursor.getString(0), DateTimeFormatter.ofPattern("yyyy.MM.dd"))] = cursor.getDouble(1)

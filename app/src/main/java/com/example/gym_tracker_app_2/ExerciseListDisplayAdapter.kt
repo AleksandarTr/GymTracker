@@ -36,7 +36,7 @@ class ExerciseListDisplayAdapter(private val exercises: ArrayList<String>, priva
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.name.text = exercises[position]
         holder.open.setOnClickListener(
-            DatabaseInterface.instance.getExerciseTypeID(exercises[position], false)?.let {
+            DatabaseInterface.getInstance(context).getExerciseTypeID(exercises[position], false)?.let {
                 openExerciseStats(it, context)
             })
     }

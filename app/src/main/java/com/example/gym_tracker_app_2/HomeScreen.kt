@@ -15,13 +15,12 @@ class HomeScreen : ComponentActivity() {
         super.onCreate(savedInstanceState)
         val binding = HomeScreenLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        DatabaseInterface.setInstance(DatabaseInterface(applicationContext))
         appDir = applicationInfo.dataDir
     }
 
     fun newWorkoutClick(view: View) {
         val intent = Intent(applicationContext, WorkoutScreen::class.java)
-        intent.putExtra("workoutID", DatabaseInterface.instance.getNextWorkoutID())
+        intent.putExtra("workoutID", DatabaseInterface.getInstance(applicationContext).getNextWorkoutID())
         startActivity(intent)
     }
 

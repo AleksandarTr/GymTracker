@@ -1,19 +1,25 @@
 package com.example.gym_tracker_app_2
 
+import android.content.Context
+import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 
-class WorkoutDisplayAdapter(fm: FragmentManager, val workoutID: Int) :
+class WorkoutDisplayAdapter(fm: FragmentManager, val workoutID: Int, val context: Context) :
     FragmentPagerAdapter(fm) {
 
     private val exerciseFragments = ArrayList<ExerciseFragment>()
     private val forDeletion = ArrayList<ExerciseFragment>()
 
     init {
-        val exerciseIDs = DatabaseInterface.instance.getWorkoutExercises(workoutID)
+        val exerciseIDs = DatabaseInterface.getInstance(context).getWorkoutExercises(workoutID)
         exerciseIDs.sort()
-        for(id in exerciseIDs) exerciseFragments.add(ExerciseFragment(exerciseFragments.size, id))
+        for(id in exerciseIDs) exerciseFragments.add(ExerciseFragment.newInstance(exerciseFragments.size, id))
+    }
+
+    fun reloadExercises(count: Int) {
+        for(i in exerciseFragments.size until count) exerciseFragments.add(ExerciseFragment.newInstance(exerciseFragments.size))
     }
 
     override fun getItem(position: Int): Fragment {
@@ -29,11 +35,12 @@ class WorkoutDisplayAdapter(fm: FragmentManager, val workoutID: Int) :
     }
 
     override fun getCount(): Int {
+        println("Fragment count: " + exerciseFragments.size)
         return exerciseFragments.size
     }
 
     fun addExercise() {
-        exerciseFragments.add(ExerciseFragment(exerciseFragments.size))
+        exerciseFragments.add(ExerciseFragment.newInstance(exerciseFragments.size))
         notifyDataSetChanged()
     }
 
@@ -47,7 +54,7 @@ class WorkoutDisplayAdapter(fm: FragmentManager, val workoutID: Int) :
     fun save() {
         for(exercise in exerciseFragments) exercise.save(workoutID)
         for(exercise in forDeletion) exercise.save(workoutID)
-        for(exercise in forDeletion) DatabaseInterface.instance.deleteExercise(exercise.getExerciseId())
+        for(exercise in forDeletion) DatabaseInterface.getInstance(context).deleteExercise(exercise.getExerciseId())
         forDeletion.clear()
     }
 }

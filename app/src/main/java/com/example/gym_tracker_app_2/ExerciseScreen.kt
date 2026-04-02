@@ -9,7 +9,7 @@ class ExerciseScreen : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.history_layout)
-        val exercises = DatabaseInterface.instance.getExerciseTypes()
+        val exercises = DatabaseInterface.getInstance(applicationContext).getExerciseTypes()
         exercises.sort()
 
         val exerciseContainer: RecyclerView = findViewById(R.id.workoutContainer)

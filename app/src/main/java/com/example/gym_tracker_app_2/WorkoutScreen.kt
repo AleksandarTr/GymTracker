@@ -27,13 +27,21 @@ class WorkoutScreen : AppCompatActivity() {
         }
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt("exerciseCount", sectionsPagerAdapter.count)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        UnitManager.loadUnits(DatabaseInterface.getInstance(applicationContext))
         binding = WorkoutLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        sectionsPagerAdapter = WorkoutDisplayAdapter(supportFragmentManager, intent.getIntExtra("workoutID", -1))
+        sectionsPagerAdapter = WorkoutDisplayAdapter(supportFragmentManager, intent.getIntExtra("workoutID", -1), this)
+        if (savedInstanceState != null) {
+            sectionsPagerAdapter.reloadExercises(savedInstanceState.getInt("exerciseCount"))
+        }
         val viewPager: ViewPager = binding.exerciseDisplay
         viewPager.adapter = sectionsPagerAdapter
         val tabs: TabLayout = binding.exerciseTab
@@ -52,7 +60,7 @@ class WorkoutScreen : AppCompatActivity() {
             removeExerciseButton.isEnabled = true
         }
 
-        val workout = DatabaseInterface.instance.getWorkout(intent.getIntExtra("workoutID", -1))
+        val workout = DatabaseInterface.getInstance(applicationContext).getWorkout(intent.getIntExtra("workoutID", -1))
 
         val nameField : EditText = binding.nameField
         nameField.setText(workout?.name)
@@ -67,15 +75,15 @@ class WorkoutScreen : AppCompatActivity() {
     }
 
     fun saveWorkout(view: View) {
-        val db = DatabaseInterface.instance.writableDatabase
+        val db = DatabaseInterface.getInstance(applicationContext).writableDatabase
         db.beginTransaction()
 
         val workoutId = intent.getIntExtra("workoutID", -1)
         if(sectionsPagerAdapter.count > 0)
-            DatabaseInterface.instance.updateWorkout(workoutId, binding.nameField.text.toString(),
+            DatabaseInterface.getInstance(applicationContext).updateWorkout(workoutId, binding.nameField.text.toString(),
                 LocalDate.parse(binding.dateField.text.toString(),
                 DateTimeFormatter.ofPattern("dd.MM.yyyy")))
-        else DatabaseInterface.instance.deleteWorkout(workoutId)
+        else DatabaseInterface.getInstance(applicationContext).deleteWorkout(workoutId)
         sectionsPagerAdapter.save()
 
         db.setTransactionSuccessful()

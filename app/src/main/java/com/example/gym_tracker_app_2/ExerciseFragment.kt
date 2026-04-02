@@ -1,5 +1,7 @@
 package com.example.gym_tracker_app_2
 
+import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -10,6 +12,7 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,9 +20,11 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.example.gym_tracker_app_2.databinding.ExerciseLayoutBinding
 import com.google.android.material.tabs.TabLayout
+import kotlin.collections.addAll
 import kotlin.math.roundToInt
+import kotlin.properties.Delegates
 
-class ExerciseFragment(private val position: Int) : Fragment() {
+class ExerciseFragment : Fragment() {
     private var _binding: ExerciseLayoutBinding? = null
     private val binding get() = _binding!!
     private var name = ""
@@ -30,12 +35,58 @@ class ExerciseFragment(private val position: Int) : Fragment() {
     private lateinit var removeSetButton : Button
     private var exerciseSets : RecyclerView? = null
     private val sets : ArrayList<Set> = ArrayList()
-    private var id : Int = DatabaseInterface.instance.getNextExerciseID()
+    private val db: DatabaseInterface? = DatabaseInterface.getInstance()
+    private val position by lazy {
+        arguments?.getInt("position")
+    }
 
-    constructor(position: Int, id: Int) : this(position) {
-        this.id = id
-        this.name = DatabaseInterface.instance.getExerciseName(id) ?: return
-        sets.addAll(DatabaseInterface.instance.getExerciseSets(id))
+    private val id by lazy {
+        arguments?.getInt("id")
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString("name", name)
+        outState.putParcelableArrayList("sets", sets)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (savedInstanceState != null) {
+            println("Restoring data")
+            name = savedInstanceState.getString("name")!!
+            val restoredSets = savedInstanceState.getParcelableArrayList("sets", Set::class.java)!!
+            sets.addAll(restoredSets)
+            println("Sets: " + restoredSets.size)
+        }
+    }
+
+    private fun initialize() {
+        if(id == null) arguments?.putInt("id", db?.getNextExerciseID() ?: 0)
+        name = db?.getExerciseName(id!!) ?: ""
+        if(db != null) sets.addAll(db.getExerciseSets(id!!))
+    }
+
+    companion object {
+        fun newInstance(position: Int): ExerciseFragment {
+            val fragment = ExerciseFragment()
+            val args = Bundle()
+            args.putInt("position", position)
+            fragment.arguments = args
+            fragment.initialize()
+            return fragment
+        }
+
+        fun newInstance(position: Int, id: Int): ExerciseFragment {
+            val fragment = ExerciseFragment()
+            val args = Bundle()
+            args.putInt("id", id)
+            args.putInt("position", position)
+            fragment.arguments = args
+            fragment.initialize()
+            return fragment
+        }
     }
 
     val tabTitle : String
@@ -66,24 +117,24 @@ class ExerciseFragment(private val position: Int) : Fragment() {
 
             override fun onTextChanged(newName: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 name = newName.toString()
-                val exerciseID = DatabaseInterface.instance.getExerciseTypeID(name, false)
+                val exerciseID = DatabaseInterface.getInstance(requireContext()).getExerciseTypeID(name, false)
                 if(exerciseID != null) {
-                    val unitType = DatabaseInterface.instance.getExerciseUnitType(exerciseID)
+                    val unitType = DatabaseInterface.getInstance(requireContext()).getExerciseUnitType(exerciseID)
                     (exerciseSets?.adapter as ExerciseDisplayAdapter).updateUnits(unitType)
 
-                    val exercisePRID = DatabaseInterface.instance.getExercisePR(exerciseID, Unit.getUnit(0))
-                    val lastExerciseID = DatabaseInterface.instance.getLastExercise(exerciseID)
+                    val exercisePRID = DatabaseInterface.getInstance(requireContext()).getExercisePR(exerciseID, UnitManager.getUnit(0))
+                    val lastExerciseID = DatabaseInterface.getInstance(requireContext()).getLastExercise(exerciseID)
                     if(exercisePRID == null || lastExerciseID == null) return
 
-                    val exercisePR = DatabaseInterface.instance.getExerciseSets(exercisePRID)
-                    val lastExercise = DatabaseInterface.instance.getExerciseSets(lastExerciseID)
+                    val exercisePR = DatabaseInterface.getInstance(requireContext()).getExerciseSets(exercisePRID)
+                    val lastExercise = DatabaseInterface.getInstance(requireContext()).getExerciseSets(lastExerciseID)
 
                     var prDisplayText = "Last: "
                     for(set in lastExercise) prDisplayText +=
-                        "${set.count}x${(set.unit.castTo(set.weight, SettingsScreen.getPreferredUnit(set.unit.type)) * 100f).roundToInt() / 100f}${SettingsScreen.getPreferredUnit(set.unit.type).name} "
+                        "${set.count}x${(set.unit.castTo(set.weight, UnitManager.getPreferredUnit(set.unit.type)) * 100f).roundToInt() / 100f}${UnitManager.getPreferredUnit(set.unit.type).name} "
                     prDisplayText += "\nPR: "
                     for(set in exercisePR) prDisplayText +=
-                        "${set.count}x${(set.unit.castTo(set.weight, SettingsScreen.getPreferredUnit(set.unit.type)) * 100f).roundToInt() / 100f}${SettingsScreen.getPreferredUnit(set.unit.type).name} "
+                        "${set.count}x${(set.unit.castTo(set.weight, UnitManager.getPreferredUnit(set.unit.type)) * 100f).roundToInt() / 100f}${UnitManager.getPreferredUnit(set.unit.type).name} "
 
                     prDisplay.text = prDisplayText
                 }
@@ -97,14 +148,14 @@ class ExerciseFragment(private val position: Int) : Fragment() {
                 if(container is ViewPager) {
                     val constraintLayout = container.parent as ConstraintLayout
                     val tabLayout = constraintLayout.findViewById<TabLayout>(R.id.exerciseTab)
-                    tabLayout.getTabAt(position)?.setText(tabTitle)
+                    tabLayout.getTabAt(position!!)?.setText(tabTitle)
                 }
             }
         })
         if(this.context != null) {
             val exerciseAdapter: ArrayAdapter<String> = ArrayAdapter(this.requireContext(),
                 android.R.layout.simple_spinner_item,
-                DatabaseInterface.instance.getExerciseTypes())
+                DatabaseInterface.getInstance(requireContext()).getExerciseTypes())
             exerciseNameField.setAdapter(exerciseAdapter)
         }
 
@@ -134,13 +185,13 @@ class ExerciseFragment(private val position: Int) : Fragment() {
     }
 
     fun save(workoutID: Int) {
-        DatabaseInterface.instance.updateExercise(id, name, workoutID)
-        for(set in sets) DatabaseInterface.instance.updateSet(set.id, set.count, set.weight, id, set.unit, set.warmup)
+        DatabaseInterface.getInstance(requireContext()).updateExercise(id!!, name, workoutID)
+        for(set in sets) DatabaseInterface.getInstance(requireContext()).updateSet(set.id, set.count, set.weight, id!!, set.unit, set.warmup)
         (exerciseSets?.adapter as ExerciseDisplayAdapter?)?.save()
     }
 
     fun getExerciseId(): Int {
-        return id
+        return id!!
     }
 
     fun removeSets() {

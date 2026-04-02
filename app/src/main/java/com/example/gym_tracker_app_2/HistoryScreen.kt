@@ -11,7 +11,7 @@ class HistoryScreen : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.history_layout)
-        val workouts = DatabaseInterface.instance.getWorkouts()
+        val workouts = DatabaseInterface.getInstance(applicationContext).getWorkouts()
         workouts.sortByDescending { workout -> workout.date }
 
         workoutContainer = findViewById(R.id.workoutContainer)
